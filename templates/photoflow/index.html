@@ -1,2 +1,933 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
+{% block title %}
+    PhotoFlow | Photography Studio Booking
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        :root {
+            --photoflow-primary: #6f42c1;
+            --photoflow-secondary: #d63384;
+            --photoflow-dark: #111118;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+
+        .navbar {
+            background: rgba(17, 17, 24, 0.96);
+            backdrop-filter: blur(12px);
+        }
+
+        .navbar-brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            height: 42px;
+            border-radius: 13px;
+            color: white;
+            background: linear-gradient(
+                135deg,
+                var(--photoflow-primary),
+                var(--photoflow-secondary)
+            );
+        }
+
+        .navbar .nav-link {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .navbar .nav-link:hover {
+            color: white;
+        }
+
+        .hero-section {
+            min-height: 760px;
+            padding-top: 110px;
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(12, 12, 18, 0.94) 0%,
+                    rgba(12, 12, 18, 0.80) 48%,
+                    rgba(12, 12, 18, 0.40) 100%
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1920&q=85"
+                )
+                center / cover no-repeat;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 9px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 50rem;
+            color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-title {
+            max-width: 800px;
+            font-size: clamp(3rem, 7vw, 6rem);
+            line-height: 0.98;
+            letter-spacing: -0.05em;
+        }
+
+        .gradient-text {
+            color: transparent;
+            background: linear-gradient(
+                135deg,
+                #a982ff,
+                #ff75b5
+            );
+            background-clip: text;
+            -webkit-background-clip: text;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .btn-photoflow {
+            color: white;
+            border: 0;
+            background: linear-gradient(
+                135deg,
+                var(--photoflow-primary),
+                var(--photoflow-secondary)
+            );
+        }
+
+        .btn-photoflow:hover {
+            color: white;
+            transform: translateY(-2px);
+            background: linear-gradient(
+                135deg,
+                #5d35a6,
+                #b92d71
+            );
+        }
+
+        .btn-photoflow,
+        .btn-outline-light {
+            padding: 13px 24px;
+            border-radius: 12px;
+            transition: 0.2s ease;
+        }
+
+        .stat-card {
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(10px);
+        }
+
+        .section-padding {
+            padding-top: 100px;
+            padding-bottom: 100px;
+        }
+
+        .section-label {
+            color: var(--photoflow-primary);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .section-title {
+            max-width: 720px;
+            font-weight: 750;
+            letter-spacing: -0.035em;
+        }
+
+        .studio-card {
+            overflow: hidden;
+            border: 0;
+            border-radius: 22px;
+            box-shadow: 0 16px 45px rgba(24, 24, 35, 0.10);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .studio-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(24, 24, 35, 0.16);
+        }
+
+        .studio-card img {
+            height: 270px;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .studio-card:hover img {
+            transform: scale(1.04);
+        }
+
+        .price-badge {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            padding: 8px 13px;
+            border-radius: 50rem;
+            color: white;
+            background: rgba(17, 17, 24, 0.88);
+            backdrop-filter: blur(10px);
+        }
+
+        .service-card {
+            height: 100%;
+            padding: 36px;
+            border: 1px solid #e9ecef;
+            border-radius: 22px;
+            background: white;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(111, 66, 193, 0.45);
+        }
+
+        .service-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 25px;
+            border-radius: 18px;
+            color: var(--photoflow-primary);
+            font-size: 1.6rem;
+            background: rgba(111, 66, 193, 0.10);
+        }
+
+        .step-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 54px;
+            height: 54px;
+            margin-bottom: 22px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 700;
+            background: linear-gradient(
+                135deg,
+                var(--photoflow-primary),
+                var(--photoflow-secondary)
+            );
+        }
+
+        .cta-section {
+            overflow: hidden;
+            border-radius: 30px;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(111, 66, 193, 0.96),
+                    rgba(214, 51, 132, 0.92)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=1600&q=80"
+                )
+                center / cover;
+        }
+
+        .footer {
+            color: rgba(255, 255, 255, 0.65);
+            background: var(--photoflow-dark);
+        }
+
+        .footer a {
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: white;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+        <div class="container py-2">
+
+            <a
+                class="navbar-brand d-flex align-items-center gap-2 fw-bold"
+                href="{% url 'flow:index' %}"
+            >
+                <span class="navbar-brand-icon">
+                    <i class="bi bi-camera-fill"></i>
+                </span>
+
+                PhotoFlow
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar"
+                aria-controls="mainNavbar"
+                aria-expanded="false"
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div
+                class="collapse navbar-collapse"
+                id="mainNavbar"
+            >
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#studios">
+                            Studios
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">
+                            Services
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="#how-it-works">
+                            How it works
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2">
+
+                    {% if user.is_authenticated %}
+                        <span class="text-white-50 me-2">
+                            Hello,
+                            {{ user.get_short_name|default:user.username }}
+                        </span>
+
+                        <a
+                            href="#"
+                            class="btn btn-outline-light"
+                        >
+                            My bookings
+                        </a>
+
+                        <form
+                            method="post"
+                            action="{% url 'logout' %}"
+                            class="m-0"
+                        >
+                            {% csrf_token %}
+
+                            <button
+                                type="submit"
+                                class="btn btn-photoflow"
+                            >
+                                Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a
+                            href="{% url 'login' %}"
+                            class="btn btn-outline-light"
+                        >
+                            Sign in
+                        </a>
+
+                        <a
+                            href="{% url 'login' %}"
+                            class="btn btn-photoflow"
+                        >
+                            Book now
+                        </a>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <header class="hero-section d-flex align-items-center text-white">
+        <div class="container py-5">
+
+            <div class="hero-badge mb-4">
+                <i class="bi bi-stars me-2"></i>
+                Photography studio booking made simple
+            </div>
+
+            <h1 class="hero-title fw-bold mb-4">
+                Create your next
+                <span class="gradient-text">perfect shot.</span>
+            </h1>
+
+            <p class="hero-description lead fs-4 mb-5">
+                Discover professional studios, choose the right service
+                and book your photo session in just a few minutes.
+            </p>
+
+            <div class="d-flex flex-column flex-sm-row gap-3 mb-5">
+                <a
+                    href="#studios"
+                    class="btn btn-photoflow btn-lg"
+                >
+                    <i class="bi bi-camera me-2"></i>
+                    Explore studios
+                </a>
+
+                <a
+                    href="#how-it-works"
+                    class="btn btn-outline-light btn-lg"
+                >
+                    How it works
+                    <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <div class="row g-3 mt-4">
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="fs-3 fw-bold">12+</div>
+                        <div class="text-white-50">Studio rooms</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="fs-3 fw-bold">20+</div>
+                        <div class="text-white-50">Photographers</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="fs-3 fw-bold">1,200+</div>
+                        <div class="text-white-50">Sessions booked</div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <div class="stat-card">
+                        <div class="fs-3 fw-bold">4.9</div>
+                        <div class="text-white-50">
+                            <i class="bi bi-star-fill text-warning"></i>
+                            Average rating
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+
+    <section
+        id="studios"
+        class="section-padding"
+    >
+        <div class="container">
+
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end gap-3 mb-5">
+                <div>
+                    <div class="section-label mb-3">
+                        Featured studios
+                    </div>
+
+                    <h2 class="section-title display-5 mb-3">
+                        Find the right space for every idea
+                    </h2>
+
+                    <p class="text-secondary fs-5 mb-0">
+                        From clean daylight studios to dramatic dark interiors.
+                    </p>
+                </div>
+
+                <a
+                    href="#"
+                    class="btn btn-outline-dark rounded-3"
+                >
+                    View all studios
+                    <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="card studio-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80"
+                                class="card-img-top"
+                                alt="Bright daylight photography studio"
+                            >
+
+                            <span class="price-badge">
+                                From $45/hour
+                            </span>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <h3 class="h4 fw-bold mb-0">
+                                    White Loft
+                                </h3>
+
+                                <span class="text-warning text-nowrap">
+                                    <i class="bi bi-star-fill"></i>
+                                    4.9
+                                </span>
+                            </div>
+
+                            <p class="text-secondary">
+                                Spacious daylight studio with large windows,
+                                white cyclorama and modern furniture.
+                            </p>
+
+                            <div class="d-flex gap-3 text-secondary small mb-4">
+                                <span>
+                                    <i class="bi bi-people me-1"></i>
+                                    10 people
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-aspect-ratio me-1"></i>
+                                    85 m²
+                                </span>
+                            </div>
+
+                            <a
+                                href="#"
+                                class="btn btn-dark w-100 rounded-3"
+                            >
+                                View studio
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="card studio-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80"
+                                class="card-img-top"
+                                alt="Dark modern photography studio"
+                            >
+
+                            <span class="price-badge">
+                                From $60/hour
+                            </span>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <h3 class="h4 fw-bold mb-0">
+                                    Black Room
+                                </h3>
+
+                                <span class="text-warning text-nowrap">
+                                    <i class="bi bi-star-fill"></i>
+                                    4.8
+                                </span>
+                            </div>
+
+                            <p class="text-secondary">
+                                A dark cinematic room designed for portraits,
+                                fashion campaigns and creative video projects.
+                            </p>
+
+                            <div class="d-flex gap-3 text-secondary small mb-4">
+                                <span>
+                                    <i class="bi bi-people me-1"></i>
+                                    8 people
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-aspect-ratio me-1"></i>
+                                    70 m²
+                                </span>
+                            </div>
+
+                            <a
+                                href="#"
+                                class="btn btn-dark w-100 rounded-3"
+                            >
+                                View studio
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="card studio-card h-100">
+                        <div class="position-relative overflow-hidden">
+                            <img
+                                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80"
+                                class="card-img-top"
+                                alt="Elegant lifestyle photography studio"
+                            >
+
+                            <span class="price-badge">
+                                From $55/hour
+                            </span>
+                        </div>
+
+                        <div class="card-body p-4">
+                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
+                                <h3 class="h4 fw-bold mb-0">
+                                    Lifestyle Room
+                                </h3>
+
+                                <span class="text-warning text-nowrap">
+                                    <i class="bi bi-star-fill"></i>
+                                    5.0
+                                </span>
+                            </div>
+
+                            <p class="text-secondary">
+                                Warm interior locations for family sessions,
+                                personal branding and lifestyle photography.
+                            </p>
+
+                            <div class="d-flex gap-3 text-secondary small mb-4">
+                                <span>
+                                    <i class="bi bi-people me-1"></i>
+                                    12 people
+                                </span>
+
+                                <span>
+                                    <i class="bi bi-aspect-ratio me-1"></i>
+                                    95 m²
+                                </span>
+                            </div>
+
+                            <a
+                                href="#"
+                                class="btn btn-dark w-100 rounded-3"
+                            >
+                                View studio
+                            </a>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section
+        id="services"
+        class="section-padding bg-white"
+    >
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <div class="section-label mb-3">
+                    Our services
+                </div>
+
+                <h2 class="section-title display-5 mx-auto mb-3">
+                    Everything you need for your photo session
+                </h2>
+
+                <p class="text-secondary fs-5">
+                    Choose a service that matches your goals and creative vision.
+                </p>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="service-card">
+                        <span class="service-icon">
+                            <i class="bi bi-person-bounding-box"></i>
+                        </span>
+
+                        <h3 class="h4 fw-bold">
+                            Portrait session
+                        </h3>
+
+                        <p class="text-secondary">
+                            Professional portraits for personal branding,
+                            social media and creative portfolios.
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <span class="fw-bold">
+                                From $120
+                            </span>
+
+                            <span class="text-secondary">
+                                60 minutes
+                            </span>
+                        </div>
+                    </article>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="service-card">
+                        <span class="service-icon">
+                            <i class="bi bi-bag-heart"></i>
+                        </span>
+
+                        <h3 class="h4 fw-bold">
+                            Product photography
+                        </h3>
+
+                        <p class="text-secondary">
+                            Clean commercial images for online stores,
+                            advertising campaigns and catalogues.
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <span class="fw-bold">
+                                From $180
+                            </span>
+
+                            <span class="text-secondary">
+                                90 minutes
+                            </span>
+                        </div>
+                    </article>
+                </div>
+
+
+                <div class="col-md-6 col-lg-4">
+                    <article class="service-card">
+                        <span class="service-icon">
+                            <i class="bi bi-people"></i>
+                        </span>
+
+                        <h3 class="h4 fw-bold">
+                            Family session
+                        </h3>
+
+                        <p class="text-secondary">
+                            Natural and emotional family photographs
+                            in a comfortable studio environment.
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <span class="fw-bold">
+                                From $150
+                            </span>
+
+                            <span class="text-secondary">
+                                75 minutes
+                            </span>
+                        </div>
+                    </article>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section
+        id="how-it-works"
+        class="section-padding"
+    >
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <div class="section-label mb-3">
+                    Simple booking
+                </div>
+
+                <h2 class="section-title display-5 mx-auto">
+                    Your session is only three steps away
+                </h2>
+            </div>
+
+            <div class="row g-5 text-center">
+
+                <div class="col-md-4">
+                    <span class="step-number">1</span>
+
+                    <h3 class="h4 fw-bold">
+                        Choose a studio
+                    </h3>
+
+                    <p class="text-secondary">
+                        Browse available rooms and select the atmosphere
+                        that suits your project.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <span class="step-number">2</span>
+
+                    <h3 class="h4 fw-bold">
+                        Select a service
+                    </h3>
+
+                    <p class="text-secondary">
+                        Pick a photographer, service, date and convenient
+                        session time.
+                    </p>
+                </div>
+
+                <div class="col-md-4">
+                    <span class="step-number">3</span>
+
+                    <h3 class="h4 fw-bold">
+                        Confirm your booking
+                    </h3>
+
+                    <p class="text-secondary">
+                        Review your details and manage the reservation
+                        from your personal account.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="pb-5">
+        <div class="container">
+            <div class="cta-section p-4 p-md-5">
+                <div class="row align-items-center g-4">
+                    <div class="col-lg-8">
+                        <h2 class="display-6 fw-bold mb-3">
+                            Ready to bring your idea to life?
+                        </h2>
+
+                        <p class="lead text-white-50 mb-0">
+                            Find your studio and reserve a photo session today.
+                        </p>
+                    </div>
+
+                    <div class="col-lg-4 text-lg-end">
+                        {% if user.is_authenticated %}
+                            <a
+                                href="#studios"
+                                class="btn btn-light btn-lg rounded-3 px-4"
+                            >
+                                Browse studios
+                            </a>
+                        {% else %}
+                            <a
+                                href="{% url 'login' %}"
+                                class="btn btn-light btn-lg rounded-3 px-4"
+                            >
+                                Sign in to book
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <footer class="footer py-5">
+        <div class="container">
+
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <a
+                        class="d-inline-flex align-items-center gap-2 text-white fs-4 fw-bold mb-3"
+                        href="{% url 'flow:index' %}"
+                    >
+                        <span class="navbar-brand-icon">
+                            <i class="bi bi-camera-fill"></i>
+                        </span>
+
+                        PhotoFlow
+                    </a>
+
+                    <p class="mb-0">
+                        A simple photography studio booking platform
+                        for clients and photographers.
+                    </p>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h3 class="h6 text-white mb-3">
+                        Explore
+                    </h3>
+
+                    <div class="d-flex flex-column gap-2">
+                        <a href="#studios">Studios</a>
+                        <a href="#services">Services</a>
+                        <a href="#how-it-works">How it works</a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h3 class="h6 text-white mb-3">
+                        Account
+                    </h3>
+
+                    <div class="d-flex flex-column gap-2">
+                        {% if user.is_authenticated %}
+                            <a href="#">My bookings</a>
+                        {% else %}
+                            <a href="{% url 'login' %}">Sign in</a>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <h3 class="h6 text-white mb-3">
+                        Contact
+                    </h3>
+
+                    <div class="d-flex flex-column gap-2">
+                        <span>
+                            <i class="bi bi-envelope me-2"></i>
+                            hello@photoflow.com
+                        </span>
+
+                        <span>
+                            <i class="bi bi-geo-alt me-2"></i>
+                            Photography Studio
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-secondary my-4">
+
+            <div class="d-flex flex-column flex-md-row justify-content-between gap-2">
+                <span>
+                    © {% now "Y" %} PhotoFlow. All rights reserved.
+                </span>
+
+                <span>
+                    Built with Django and Bootstrap
+                </span>
+            </div>
+
+        </div>
+    </footer>
+
+{% endblock %}
+```
