@@ -10,7 +10,7 @@ def index(request):
     context = {
         "studios": studios,
         "studio_room_count": StudioRoom.objects.all().count(),
-        "photographers_count": User.objects.filter(role='Photographer').count(),
+        "photographers_count": User.objects.filter(role__icontains="photographer").count(),
         "session_count": Booking.objects.all().count(),
     }
 
