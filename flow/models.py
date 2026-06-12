@@ -15,6 +15,8 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.CLIENT,
     )
+    def __str__(self):
+        return self.username
 
 
 class StudioRoom(models.Model):
@@ -23,12 +25,18 @@ class StudioRoom(models.Model):
     price_per_hour = models.IntegerField()
     capacity = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.name} {self.capacity}"
+
 
 class Service(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     price = models.IntegerField()
     duration = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.name} {self.duration}"
 
 
 class Booking(models.Model):
@@ -50,4 +58,6 @@ class Booking(models.Model):
     status = models.CharField(max_length=100)
     comment = models.TextField()
 
+    def __str__(self):
+        return f"{self.studio_room.name} {self.service.name} {self.date}"
 
