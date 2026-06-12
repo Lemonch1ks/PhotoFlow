@@ -3,10 +3,6 @@ from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 from flow.models import User, StudioRoom, Service, Booking
 
-admin.site.register(StudioRoom)
-admin.site.register(Service)
-admin.site.register(Booking)
-
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -57,3 +53,59 @@ class UserAdmin(BaseUserAdmin):
             },
         ),
     )
+
+@admin.register(StudioRoom)
+class StudioRoomAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "price_per_hour",
+        'capacity',
+        "image",
+        'description'
+    )
+
+    search_fields = (
+        "name",
+        "description",
+    )
+
+    ordering = ("name",)
+
+    list_filter = (
+        "capacity",
+    )
+
+
+@admin.register(Service)
+class ServiceAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "price",
+        "duration_in_hours",
+        "description",
+    )
+
+    list_filter = (
+        "price",
+    )
+
+    @admin.display(description="Duration", ordering="duration")
+    def duration_in_hours(self, obj):
+        unit = "hour" if obj.duration == 1 else "hours"
+        return f"{obj.duration} {unit}"
+
+
+@admin.register(Booking)
+class BookingAdmin(admin.ModelAdmin):
+    list_display = (
+        "comment",
+    )
+
+    fieldsets = [
+        (
+            None,
+            {
+                "fields": ["client", "photographer"],
+            }
+        )
+    ]
