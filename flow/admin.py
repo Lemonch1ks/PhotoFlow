@@ -109,3 +109,20 @@ class BookingAdmin(admin.ModelAdmin):
             }
         )
     ]
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "photographer":
+            kwargs["queryset"] = User.objects.filter(
+                role=User.Role.PHOTOGRAPHER,
+            )
+
+        elif db_field.name == "client":
+            kwargs["queryset"] = User.objects.filter(
+                role=User.Role.CLIENT,
+            )
+
+        return super().formfield_for_foreignkey(
+            db_field,
+            request,
+            **kwargs,
+        )
