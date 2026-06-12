@@ -24,6 +24,7 @@ class StudioRoom(models.Model):
     description = models.TextField()
     price_per_hour = models.IntegerField()
     capacity = models.IntegerField()
+    image = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def __str__(self):
         return f"{self.name} {self.capacity}"

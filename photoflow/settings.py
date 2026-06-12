@@ -128,3 +128,6 @@ AUTH_USER_MODEL = "flow.User"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = None
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
