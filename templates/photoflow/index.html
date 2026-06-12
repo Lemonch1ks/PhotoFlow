@@ -459,171 +459,66 @@
                     <i class="bi bi-arrow-right ms-2"></i>
                 </a>
             </div>
+                <div class="row g-4">
 
-            <div class="row g-4">
+                    {% for studio in studios %}
+                        <div class="col-md-6 col-lg-4">
+                            <article class="card studio-card h-100">
 
-                <div class="col-md-6 col-lg-4">
-                    <article class="card studio-card h-100">
-                        <div class="position-relative overflow-hidden">
-                            <img
-                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=900&q=80"
-                                class="card-img-top"
-                                alt="Bright daylight photography studio"
-                            >
+                                <div class="position-relative overflow-hidden">
 
-                            <span class="price-badge">
-                                From $45/hour
-                            </span>
+                                    {% if studio.image %}
+                                        <img
+                                            src="{{ studio.image.url }}"
+                                            class="card-img-top"
+                                            alt="{{ studio.name }}"
+                                        >
+                                    {% else %}
+                                        <img
+                                            src="https://placehold.co/900x600?text=No+image"
+                                            class="card-img-top"
+                                            alt="No image available"
+                                        >
+                                    {% endif %}
+
+                                    <span class="price-badge">
+                                        From ${{ studio.price_per_hour }}/hour
+                                    </span>
+                                </div>
+
+                                <div class="card-body p-4 d-flex flex-column">
+                                    <h3 class="h4 fw-bold mb-3">
+                                        {{ studio.name }}
+                                    </h3>
+
+                                    <p class="text-secondary">
+                                        {{ studio.description|truncatewords:20 }}
+                                    </p>
+
+                                    <div class="text-secondary small mb-4">
+                                        <i class="bi bi-people me-1"></i>
+                                        {{ studio.capacity }} people
+                                    </div>
+
+                                    <a
+                                        href="{% url 'flow:studio-detail' studio.id %}"
+                                        class="btn btn-dark w-100 rounded-3 mt-auto"
+                                    >
+                                        View studio
+                                    </a>
+                                </div>
+
+                            </article>
                         </div>
-
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-                                <h3 class="h4 fw-bold mb-0">
-                                    White Loft
-                                </h3>
-
-                                <span class="text-warning text-nowrap">
-                                    <i class="bi bi-star-fill"></i>
-                                    4.9
-                                </span>
+                    {% empty %}
+                        <div class="col-12">
+                            <div class="alert alert-secondary">
+                                No studios have been added yet.
                             </div>
-
-                            <p class="text-secondary">
-                                Spacious daylight studio with large windows,
-                                white cyclorama and modern furniture.
-                            </p>
-
-                            <div class="d-flex gap-3 text-secondary small mb-4">
-                                <span>
-                                    <i class="bi bi-people me-1"></i>
-                                    10 people
-                                </span>
-
-                                <span>
-                                    <i class="bi bi-aspect-ratio me-1"></i>
-                                    85 m²
-                                </span>
-                            </div>
-
-                            <a
-                                href="{% url 'flow:studio-detail' studio_id=1 %}"
-                                class="btn btn-dark w-100 rounded-3"
-                            >
-                                View studio
-                            </a>
                         </div>
-                    </article>
+                    {% endfor %}
+
                 </div>
-
-
-                <div class="col-md-6 col-lg-4">
-                    <article class="card studio-card h-100">
-                        <div class="position-relative overflow-hidden">
-                            <img
-                                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80"
-                                class="card-img-top"
-                                alt="Dark modern photography studio"
-                            >
-
-                            <span class="price-badge">
-                                From $60/hour
-                            </span>
-                        </div>
-
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-                                <h3 class="h4 fw-bold mb-0">
-                                    Black Room
-                                </h3>
-
-                                <span class="text-warning text-nowrap">
-                                    <i class="bi bi-star-fill"></i>
-                                    4.8
-                                </span>
-                            </div>
-
-                            <p class="text-secondary">
-                                A dark cinematic room designed for portraits,
-                                fashion campaigns and creative video projects.
-                            </p>
-
-                            <div class="d-flex gap-3 text-secondary small mb-4">
-                                <span>
-                                    <i class="bi bi-people me-1"></i>
-                                    8 people
-                                </span>
-
-                                <span>
-                                    <i class="bi bi-aspect-ratio me-1"></i>
-                                    70 m²
-                                </span>
-                            </div>
-
-                            <a
-                                href="#"
-                                class="btn btn-dark w-100 rounded-3"
-                            >
-                                View studio
-                            </a>
-                        </div>
-                    </article>
-                </div>
-
-
-                <div class="col-md-6 col-lg-4">
-                    <article class="card studio-card h-100">
-                        <div class="position-relative overflow-hidden">
-                            <img
-                                src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=900&q=80"
-                                class="card-img-top"
-                                alt="Elegant lifestyle photography studio"
-                            >
-
-                            <span class="price-badge">
-                                From $55/hour
-                            </span>
-                        </div>
-
-                        <div class="card-body p-4">
-                            <div class="d-flex justify-content-between align-items-start gap-3 mb-2">
-                                <h3 class="h4 fw-bold mb-0">
-                                    Lifestyle Room
-                                </h3>
-
-                                <span class="text-warning text-nowrap">
-                                    <i class="bi bi-star-fill"></i>
-                                    5.0
-                                </span>
-                            </div>
-
-                            <p class="text-secondary">
-                                Warm interior locations for family sessions,
-                                personal branding and lifestyle photography.
-                            </p>
-
-                            <div class="d-flex gap-3 text-secondary small mb-4">
-                                <span>
-                                    <i class="bi bi-people me-1"></i>
-                                    12 people
-                                </span>
-
-                                <span>
-                                    <i class="bi bi-aspect-ratio me-1"></i>
-                                    95 m²
-                                </span>
-                            </div>
-
-                            <a
-                                href="#"
-                                class="btn btn-dark w-100 rounded-3"
-                            >
-                                View studio
-                            </a>
-                        </div>
-                    </article>
-                </div>
-
-            </div>
         </div>
     </section>
 

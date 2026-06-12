@@ -6,7 +6,15 @@ from flow.models import StudioRoom
 
 
 def index(request):
-    return render(request, "photoflow/index.html")
+    studios = StudioRoom.objects.all()
+
+    return render(
+        request,
+        "photoflow/index.html",
+        {
+            "studios": studios,
+        },
+    )
 
 
 def sign_up(request):
