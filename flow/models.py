@@ -61,4 +61,3 @@ class Booking(models.Model):
 
     def __str__(self):
         return f"{self.studio_room.name} {self.service.name} {self.date}"
-

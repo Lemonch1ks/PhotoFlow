@@ -2,18 +2,23 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render, get_object_or_404
 
 from flow.forms import SignUpForm
-from flow.models import StudioRoom
+from flow.models import StudioRoom, User, Booking
 
 
 def index(request):
     studios = StudioRoom.objects.all()
+    context = {
+        "studios": studios,
+        "studio_room_count": StudioRoom.objects.all().count(),
+        "photographers_count": User.objects.filter(role='Photographer').count(),
+        "session_count": Booking.objects.all().count(),
+    }
+
 
     return render(
         request,
         "photoflow/index.html",
-        {
-            "studios": studios,
-        },
+        context=context,
     )
 
 
