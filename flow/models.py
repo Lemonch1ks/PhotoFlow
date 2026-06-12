@@ -27,7 +27,7 @@ class StudioRoom(models.Model):
     image = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} {self.capacity}"
+        return self.name
 
 
 class Service(models.Model):
