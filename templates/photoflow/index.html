@@ -325,10 +325,14 @@
                         </span>
 
                         <a
-                            href="#"
-                            class="btn btn-outline-light"
+                            href="{% url 'flow:booking-list' %}"
+                            class="btn btn-photoflow"
                         >
-                            My bookings
+                            {% if user.role == "photographer" %}
+                                My photo session bookings
+                            {% else %}
+                                My bookings
+                            {% endif %}
                         </a>
 
                         <form
@@ -340,7 +344,7 @@
 
                             <button
                                 type="submit"
-                                class="btn btn-photoflow"
+                                class="btn btn-outline-light"
                             >
                                 Logout
                             </button>

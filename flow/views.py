@@ -1,4 +1,5 @@
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
 from flow.forms import SignUpForm
@@ -67,4 +68,40 @@ def studio_list(request):
         {
             "studios": studios,
         }
+    )
+
+@login_required
+def booking_list(request):
+    if request.user.role == User.Role.PHOTOGRAPHER:
+        bookings = (
+            request.user.photographer_bookings
+            .select_related(
+                "client",
+                "studio_room",
+                "service",
+            )
+            .order_by("-date", "-id")
+        )
+
+        page_title = "My photo session bookings"
+    else:
+        bookings = (
+            request.user.client_bookings
+            .select_related(
+                "photographer",
+                "studio_room",
+                "service",
+            )
+            .order_by("-date", "-id")
+        )
+
+        page_title = "My bookings"
+
+    return render(
+        request,
+        "photoflow/booking_list.html",
+        {
+            "bookings": bookings,
+            "page_title": page_title,
+        },
     )
