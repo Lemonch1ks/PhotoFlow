@@ -98,7 +98,19 @@ class ServiceAdmin(admin.ModelAdmin):
 @admin.register(Booking)
 class BookingAdmin(admin.ModelAdmin):
     list_display = (
-        "comment",
+        "client",
+        "date",
+        "photographer",
+        "status",
+        "studio_room",
+    )
+
+    list_filter = (
+        "client",
+        "date",
+        "photographer",
+        "status",
+        "studio_room",
     )
 
     fieldsets = [

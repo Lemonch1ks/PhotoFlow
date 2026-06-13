@@ -56,8 +56,16 @@ class Booking(models.Model):
     studio_room = models.ForeignKey(StudioRoom, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateField(auto_now_add=True)
-    status = models.CharField(max_length=100)
-    comment = models.TextField()
+    status = models.CharField(
+        null=True,
+        choices={
+            "Pending": "Pending",
+            "Confirmed": 'Confirmed',
+            "Completed": "Completed",
+            "Cancelled": "Cancelled",
+        },
+    )
+    comment = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.studio_room.name} {self.service.name} {self.date}"
