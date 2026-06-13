@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Logged out | PhotoFlow
+{% endblock %}
+
+{% block body_class %}
+    logged-out-page
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .logged-out-page {
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    rgba(10, 10, 15, 0.76),
+                    rgba(10, 10, 15, 0.92)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=1920&q=85"
+                )
+                center / cover no-repeat;
+        }
+
+        .logged-out-wrapper {
+            min-height: 100vh;
+        }
+
+        .logged-out-card {
+            width: 100%;
+            max-width: 520px;
+            padding: 48px;
+            border: 0;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.97);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.42);
+        }
+
+        .logout-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 82px;
+            height: 82px;
+            border-radius: 24px;
+            color: #ffffff;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #6f42c1, #d63384);
+            box-shadow: 0 15px 35px rgba(111, 66, 193, 0.28);
+        }
+
+        .btn-photoflow {
+            min-height: 52px;
+            border: 0;
+            border-radius: 12px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #6f42c1, #d63384);
+        }
+
+        .btn-photoflow:hover {
+            color: #ffffff;
+            background: linear-gradient(135deg, #5d35a6, #b92d71);
+        }
+
+        .btn-home {
+            min-height: 52px;
+            border-radius: 12px;
+        }
+
+        @media (max-width: 575.98px) {
+            .logged-out-card {
+                padding: 38px 24px;
+                border-radius: 18px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main
+        class="container logged-out-wrapper
+               d-flex align-items-center justify-content-center py-5"
+    >
+        <section class="card logged-out-card text-center">
+
+            <div class="mb-4">
+                <span class="logout-icon">
+                    <i class="bi bi-check-lg"></i>
+                </span>
+            </div>
+
+            <h1 class="h2 fw-bold mb-3">
+                You have been logged out
+            </h1>
+
+            <p class="text-secondary fs-5 mb-4">
+                Thank you for using PhotoFlow.
+                Your session has been closed successfully.
+            </p>
+
+            <div class="d-grid gap-3">
+                <a
+                    href="{% url 'login' %}"
+                    class="btn btn-photoflow
+                           d-flex align-items-center justify-content-center"
+                >
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    Sign in again
+                </a>
+
+                <a
+                    href="{% url 'flow:index' %}"
+                    class="btn btn-outline-dark btn-home
+                           d-flex align-items-center justify-content-center"
+                >
+                    <i class="bi bi-house me-2"></i>
+                    Back to homepage
+                </a>
+            </div>
+
+            <p class="small text-secondary mt-4 mb-0">
+                Photography Studio Booking System
+            </p>
+
+        </section>
+    </main>
+{% endblock %}

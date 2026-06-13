@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {{ page_title }} | PhotoFlow
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        :root {
+            --photoflow-primary: #6f42c1;
+            --photoflow-secondary: #d63384;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .page-header {
+            color: white;
+            background: linear-gradient(
+                135deg,
+                var(--photoflow-primary),
+                var(--photoflow-secondary)
+            );
+        }
+
+        .booking-card {
+            border: 0;
+            border-radius: 18px;
+            box-shadow: 0 12px 35px rgba(24, 24, 35, 0.1);
+        }
+
+        .status-badge {
+            padding: 7px 12px;
+            border-radius: 50rem;
+            background-color: #f1eaff;
+            color: var(--photoflow-primary);
+            font-weight: 600;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container py-2">
+            <a
+                href="{% url 'flow:index' %}"
+                class="navbar-brand fw-bold"
+            >
+                <i class="bi bi-camera-fill me-2"></i>
+                PhotoFlow
+            </a>
+
+            <div class="d-flex gap-2">
+                <a
+                    href="{% url 'flow:index' %}"
+                    class="btn btn-outline-light"
+                >
+                    Home
+                </a>
+
+                <form
+                    method="post"
+                    action="{% url 'logout' %}"
+                    class="m-0"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-outline-light"
+                    >
+                        Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <header class="page-header py-5">
+        <div class="container">
+            <h1 class="fw-bold mb-2">
+                {{ page_title }}
+            </h1>
+
+            <p class="mb-0 opacity-75">
+                {% if user.role == "photographer" %}
+                    Photo sessions assigned to you.
+                {% else %}
+                    Your booked photo sessions.
+                {% endif %}
+            </p>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        {% if bookings %}
+            <div class="row g-4">
+                {% for booking in bookings %}
+                    <div class="col-12 col-lg-6">
+                        <article class="card booking-card h-100">
+                            <div class="card-body p-4">
+                                <div
+                                    class="d-flex justify-content-between
+                                           align-items-start gap-3 mb-3"
+                                >
+                                    <div>
+                                        <h2 class="h4 mb-1">
+                                            {{ booking.studio_room.name }}
+                                        </h2>
+
+                                        <div class="text-muted">
+                                            {{ booking.service.name }}
+                                        </div>
+                                    </div>
+
+                                    <span class="status-badge">
+                                        {{ booking.status|default:"Pending" }}
+                                    </span>
+                                </div>
+
+                                <hr>
+
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-4">Date</dt>
+                                    <dd class="col-sm-8">
+                                        {{ booking.date|date:"F j, Y" }}
+                                    </dd>
+
+                                    {% if user.role == "photographer" %}
+                                        <dt class="col-sm-4">Client</dt>
+                                        <dd class="col-sm-8">
+                                            {{ booking.client.get_full_name|default:booking.client.username }}
+                                        </dd>
+                                    {% else %}
+                                        <dt class="col-sm-4">Photographer</dt>
+                                        <dd class="col-sm-8">
+                                            {{ booking.photographer.get_full_name|default:booking.photographer.username }}
+                                        </dd>
+                                    {% endif %}
+
+                                    <dt class="col-sm-4">Duration</dt>
+                                    <dd class="col-sm-8">
+                                        {{ booking.service.duration }}
+                                        hour{{ booking.service.duration|pluralize }}
+                                    </dd>
+
+                                    {% if booking.comment %}
+                                        <dt class="col-sm-4">Comment</dt>
+                                        <dd class="col-sm-8">
+                                            {{ booking.comment }}
+                                        </dd>
+                                    {% endif %}
+                                </dl>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center bg-white rounded-4 p-5 shadow-sm">
+                <i class="bi bi-calendar-x display-4 text-muted"></i>
+
+                <h2 class="h4 mt-3">
+                    No bookings yet
+                </h2>
+
+                <p class="text-muted mb-4">
+                    {% if user.role == "photographer" %}
+                        No photo sessions are currently assigned to you.
+                    {% else %}
+                        You have not booked any photo sessions yet.
+                    {% endif %}
+                </p>
+
+                <a
+                    href="{% url 'flow:index' %}#studios"
+                    class="btn btn-primary"
+                >
+                    Browse studios
+                </a>
+            </div>
+        {% endif %}
+    </main>
+{% endblock %}

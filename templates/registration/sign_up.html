@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    Create account | PhotoFlow
+{% endblock %}
+
+{% block body_class %}
+    signup-page
+{% endblock %}
+
+{% block extra_css %}
+    <style>
+        .signup-page {
+            min-height: 100vh;
+            background:
+                linear-gradient(
+                    rgba(10, 10, 15, 0.74),
+                    rgba(10, 10, 15, 0.90)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?auto=format&fit=crop&w=1920&q=85"
+                )
+                center / cover no-repeat;
+        }
+
+        .signup-wrapper {
+            min-height: 100vh;
+        }
+
+        .signup-card {
+            width: 100%;
+            max-width: 1050px;
+            overflow: hidden;
+            border: 0;
+            border-radius: 24px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+        }
+
+        .signup-info {
+            min-height: 720px;
+            padding: 60px;
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(15, 15, 22, 0.87),
+                    rgba(65, 25, 90, 0.76)
+                ),
+                url(
+                    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80"
+                )
+                center / cover no-repeat;
+        }
+
+        .signup-form-section {
+            padding: 55px;
+            background-color: #ffffff;
+        }
+
+        .brand-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            color: #ffffff;
+            background: linear-gradient(135deg, #6f42c1, #d63384);
+        }
+
+        .signup-page .form-control {
+            min-height: 48px;
+            border-radius: 11px;
+        }
+
+        .signup-page .form-control:focus {
+            border-color: #6f42c1;
+            box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.15);
+        }
+
+        .signup-button {
+            min-height: 52px;
+            border: 0;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6f42c1, #d63384);
+        }
+
+        .signup-button:hover {
+            background: linear-gradient(135deg, #5d35a6, #b92d71);
+        }
+
+        .feature-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.14);
+        }
+
+        @media (max-width: 767.98px) {
+            .signup-info {
+                display: none !important;
+            }
+
+            .signup-form-section {
+                padding: 40px 26px;
+            }
+
+            .signup-card {
+                max-width: 550px;
+                border-radius: 18px;
+            }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <main
+        class="container signup-wrapper
+               d-flex align-items-center justify-content-center py-5"
+    >
+        <div class="card signup-card">
+            <div class="row g-0">
+
+                <section
+                    class="col-md-5 signup-info text-white
+                           d-flex flex-column justify-content-between"
+                >
+                    <a
+                        href="{% url 'flow:index' %}"
+                        class="text-white text-decoration-none
+                               d-flex align-items-center gap-3"
+                    >
+                        <span class="brand-icon">
+                            <i class="bi bi-camera-fill fs-4"></i>
+                        </span>
+
+                        <span class="fs-3 fw-bold">
+                            PhotoFlow
+                        </span>
+                    </a>
+
+                    <div>
+                        <h1 class="display-5 fw-bold mb-4">
+                            Start creating memorable moments.
+                        </h1>
+
+                        <p class="lead text-white-50 mb-4">
+                            Create an account and book professional
+                            photography studios in just a few steps.
+                        </p>
+
+                        <div class="d-flex flex-column gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="feature-icon">
+                                    <i class="bi bi-search"></i>
+                                </span>
+
+                                <span>
+                                    Explore available studios
+                                </span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="feature-icon">
+                                    <i class="bi bi-calendar-check"></i>
+                                </span>
+
+                                <span>
+                                    Book a convenient date and time
+                                </span>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="feature-icon">
+                                    <i class="bi bi-camera"></i>
+                                </span>
+
+                                <span>
+                                    Choose services and photographers
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="small text-white-50 mb-0">
+                        Photography Studio Booking System
+                    </p>
+                </section>
+
+
+                <section class="col-md-7 signup-form-section">
+
+                    <div class="d-md-none mb-4">
+                        <a
+                            href="{% url 'flow:index' %}"
+                            class="text-dark text-decoration-none
+                                   d-flex align-items-center gap-2"
+                        >
+                            <span class="brand-icon">
+                                <i class="bi bi-camera-fill"></i>
+                            </span>
+
+                            <span class="fs-4 fw-bold">
+                                PhotoFlow
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="mb-4">
+                        <h2 class="fw-bold mb-2">
+                            Create your account
+                        </h2>
+
+                        <p class="text-secondary mb-0">
+                            Enter your details to start booking photo sessions.
+                        </p>
+                    </div>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {{ form|crispy }}
+
+                        <input
+                            type="submit"
+                            class="btn btn-primary
+                                   signup-button w-100 fw-semibold mt-3"
+                            value="Create account"
+                        >
+
+
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <span class="text-secondary">
+                            Already have an account?
+                        </span>
+
+                        <a
+                            href="{% url 'login' %}"
+                            class="fw-semibold text-decoration-none"
+                        >
+                            Sign in
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="text-center">
+                        <a
+                            href="{% url 'flow:index' %}"
+                            class="text-secondary text-decoration-none"
+                        >
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Back to homepage
+                        </a>
+                    </div>
+
+                </section>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+```
