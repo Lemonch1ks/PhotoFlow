@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Book {{ studio_room.name }}
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-9 col-lg-7">
+
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4 p-md-5">
+
+                    <h1 class="h3 mb-2">Book a photo session</h1>
+
+                    <p class="text-muted mb-4">
+                        Studio:
+                        <strong>{{ studio_room.name }}</strong>
+                    </p>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {% for error in form.non_field_errors %}
+                                    <div>{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <!-- Service -->
+                        <div class="mb-3">
+                            <label
+                                for="{{ form.service.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                Service
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            {{ form.service }}
+
+                            {% for error in form.service.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Date -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label
+                                    for="{{ form.date.id_for_label }}"
+                                    class="form-label fw-semibold"
+                                >
+                                    Date
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                {{ form.date }}
+
+                                {% for error in form.date.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Start time -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label
+                                    for="{{ form.start_time.id_for_label }}"
+                                    class="form-label fw-semibold"
+                                >
+                                    Start time
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                {{ form.start_time }}
+
+                                {% for error in form.start_time.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <!-- Duration -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label
+                                    for="{{ form.duration.id_for_label }}"
+                                    class="form-label fw-semibold"
+                                >
+                                    Duration
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                <div class="input-group">
+                                    {{ form.duration }}
+                                    <span class="input-group-text">hours</span>
+                                </div>
+
+                                {% for error in form.duration.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Number of people -->
+                            <div class="col-12 col-md-6 mb-3">
+                                <label
+                                    for="{{ form.number_of_people.id_for_label }}"
+                                    class="form-label fw-semibold"
+                                >
+                                    Number of people
+                                    <span class="text-danger">*</span>
+                                </label>
+
+                                {{ form.number_of_people }}
+
+                                {% for error in form.number_of_people.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ error }}
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+
+                        <!-- Comment -->
+                        <div class="mb-4">
+                            <label
+                                for="{{ form.comment.id_for_label }}"
+                                class="form-label fw-semibold"
+                            >
+                                Comment
+                            </label>
+
+                            {{ form.comment }}
+
+                            <div class="form-text">
+                                Add any details or requirements for the session.
+                            </div>
+
+                            {% for error in form.comment.errors %}
+                                <div class="text-danger small mt-1">
+                                    {{ error }}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="alert alert-light border">
+                            The booking will initially have the
+                            <strong>Pending</strong> status.
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                Book session
+                            </button>
+
+                            <a
+                                href="{% url 'studio-detail' studio_room.pk %}"
+                                class="btn btn-outline-secondary"
+                            >
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

@@ -801,7 +801,15 @@
 
                     <div class="d-flex flex-column gap-2">
                         {% if user.is_authenticated %}
-                            <a href="#">My bookings</a>
+                            <a
+                            href="{% url 'flow:booking-list' %}"
+                            >
+                            {% if user.role == "photographer" %}
+                                My photo session bookings
+                            {% else %}
+                                My bookings
+                            {% endif %}
+                            </a>
                         {% else %}
                             <a href="{% url 'login' %}">Sign in</a>
                         {% endif %}

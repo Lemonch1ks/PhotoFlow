@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
-from flow.forms import SignUpForm
+from flow.forms import SignUpForm, BookingSessionForm
 from flow.models import StudioRoom, User, Booking
 
 
@@ -103,5 +103,32 @@ def booking_list(request):
         {
             "bookings": bookings,
             "page_title": page_title,
+        },
+    )
+
+
+@login_required
+def book_session(request, pk):
+    studio = get_object_or_404(StudioRoom, pk=pk)
+
+    if request.method == "POST":
+        form = BookingSessionForm(request.POST)
+
+        if form.is_valid():
+            booking = form.save(commit=False)
+            booking.studio = studio
+            booking.user = request.user
+            booking.save()
+
+            return redirect("studio-detail", pk=studio.pk)
+    else:
+        form = BookingSessionForm()
+
+    return render(
+        request,
+        "photoflow/booking_session.html",
+        {
+            "studio": studio,
+            "form": form,
         },
     )

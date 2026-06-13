@@ -6,6 +6,7 @@ from flow.views import (
     studio_detail,
     studio_list,
     booking_list,
+    book_session,
 )
 
 
@@ -25,5 +26,10 @@ urlpatterns = [
         "studios/list",
         studio_list,
         name="studio-list",
-    )
+    ),
+    path(
+    "studios/<int:pk>/book/",
+    book_session,
+    name="book-session",
+    ),
 ]

@@ -1,3 +1,5 @@
+from datetime import time
+
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
@@ -55,7 +57,10 @@ class Booking(models.Model):
 
     studio_room = models.ForeignKey(StudioRoom, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add=True)
+    date = models.DateField()
+    start_time = models.TimeField(default=str(time(0, 0)))
+    duration = models.IntegerField(default=1)
+    number_of_people = models.IntegerField(default=1)
     status = models.CharField(
         null=True,
         choices={

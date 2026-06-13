@@ -103,6 +103,9 @@ class BookingAdmin(admin.ModelAdmin):
         "photographer",
         "status",
         "studio_room",
+        "start_time",
+        "number_of_people",
+        "duration",
     )
 
     list_filter = (
@@ -117,7 +120,7 @@ class BookingAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["client", "photographer", "studio_room", "service", "status", "comment"],
+                "fields": ["client", "photographer", "studio_room", "service", "status", "comment", "duration", "start_time", "number_of_people"],
             }
         )
     ]
