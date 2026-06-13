@@ -58,17 +58,20 @@ class Booking(models.Model):
     studio_room = models.ForeignKey(StudioRoom, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateField()
-    start_time = models.TimeField(default=str(time(0, 0)))
+    start_time = models.TimeField(default=time(0, 0),)
     duration = models.IntegerField(default=1)
     number_of_people = models.IntegerField(default=1)
     status = models.CharField(
         null=True,
+        max_length=20,
         choices={
             "Pending": "Pending",
             "Confirmed": 'Confirmed',
             "Completed": "Completed",
             "Cancelled": "Cancelled",
         },
+        default= "Pending",
+
     )
     comment = models.TextField(null=True, blank=True)
 

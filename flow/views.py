@@ -2,7 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
-from flow.forms import SignUpForm, BookingSessionForm
+from flow.forms import SignUpForm, BookingForm
 from flow.models import StudioRoom, User, Booking
 
 
@@ -109,20 +109,34 @@ def booking_list(request):
 
 @login_required
 def book_session(request, pk):
-    studio = get_object_or_404(StudioRoom, pk=pk)
+    studio = get_object_or_404(
+        StudioRoom,
+        pk=pk,
+    )
 
     if request.method == "POST":
-        form = BookingSessionForm(request.POST)
+        form = BookingForm(
+            request.POST,
+            studio=studio,
+        )
 
         if form.is_valid():
             booking = form.save(commit=False)
-            booking.studio = studio
-            booking.user = request.user
+
+            # Пользователь подставляется автоматически
+            booking.client = request.user
+
+            # Студия берётся из URL
+            booking.studio_room = studio
+
+            # Начальный статус
+            booking.status = "Pending"
+
             booking.save()
 
-            return redirect("studio-detail", pk=studio.pk)
+            return redirect("flow:booking-list")
     else:
-        form = BookingSessionForm()
+        form = BookingForm(studio=studio)
 
     return render(
         request,

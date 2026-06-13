@@ -81,13 +81,14 @@
                             {{ studio.capacity }} people
                         </div>
                     </div>
-
-                    <a
-                        href="{% url 'flow:book-session' pk=studio.id%}"
-                        class="btn btn-dark btn-lg w-100"
-                    >
-                        Book this studio
-                    </a>
+                    {% if user.role != "photographer" %}
+                      <a
+                          href="{% url 'flow:book-session' pk=studio.id%}"
+                          class="btn btn-dark btn-lg w-100"
+                      >
+                          Book this studio
+                      </a>
+                    {% endif %}
 
                 </div>
             </div>
