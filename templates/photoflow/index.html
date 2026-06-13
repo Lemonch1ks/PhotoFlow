@@ -6,6 +6,25 @@
 
 {% block extra_css %}
     <style>
+      .new-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 2;
+
+    padding: 5px 11px;
+    border-radius: 5px;
+
+    color: white;
+    background-color: #dc3545;
+
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
         :root {
             --photoflow-primary: #6f42c1;
             --photoflow-secondary: #d63384;
@@ -470,6 +489,11 @@
                             <article class="card studio-card h-100">
 
                                 <div class="position-relative overflow-hidden">
+                                    {% if forloop.first %}
+                                        <span class="new-badge">
+                                            New
+                                        </span>
+                                    {% endif %}
 
                                     {% if studio.image %}
                                         <img

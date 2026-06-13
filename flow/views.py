@@ -7,7 +7,7 @@ from flow.models import StudioRoom, User, Booking
 
 
 def index(request):
-    studios = StudioRoom.objects.all()
+    studios = StudioRoom.objects.order_by("-id")[:3]
     context = {
         "studios": studios,
         "studio_room_count": StudioRoom.objects.all().count(),
