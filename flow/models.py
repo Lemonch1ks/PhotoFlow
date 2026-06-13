@@ -21,7 +21,7 @@ class User(AbstractUser):
 
 class StudioRoom(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField()
+    description = models.TextField(blank=True, null=True)
     price_per_hour = models.IntegerField()
     capacity = models.IntegerField()
     image = models.ImageField(upload_to="images/", blank=True, null=True)

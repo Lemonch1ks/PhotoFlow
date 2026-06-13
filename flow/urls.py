@@ -1,6 +1,11 @@
 from django.urls import path
 
-from flow.views import index, sign_up, studio_detail
+from flow.views import (
+    index,
+    sign_up,
+    studio_detail,
+    studio_list,
+)
 
 
 app_name = "flow"
@@ -14,4 +19,9 @@ urlpatterns = [
         studio_detail,
         name="studio-detail",
     ),
+    path(
+        "studios/list",
+        studio_list,
+        name="studio-list",
+    )
 ]

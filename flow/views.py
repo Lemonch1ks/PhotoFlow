@@ -57,3 +57,14 @@ def studio_detail(request, studio_id):
             "studio": studio,
         },
     )
+
+def studio_list(request):
+    studios = StudioRoom.objects.all()
+
+    return render(
+        request,
+        "photoflow/studio_list.html",
+        {
+            "studios": studios,
+        }
+    )
