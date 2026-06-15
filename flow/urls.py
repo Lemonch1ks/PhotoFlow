@@ -17,6 +17,7 @@ urlpatterns = [
     path("sign-up/", sign_up, name="signup"),
     path("bookings/", booking_list, name="booking-list"),
 
+
     path(
         "studios/<int:studio_id>/",
         studio_detail,

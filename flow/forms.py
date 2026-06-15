@@ -39,8 +39,6 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
 
-        # client, studio_room и status
-        # устанавливаются автоматически во view
         fields = (
             "photographer",
             "service",

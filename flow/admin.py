@@ -120,7 +120,7 @@ class BookingAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["client", "photographer", "studio_room", "service", "status", "comment", "duration", "start_time", "number_of_people"],
+                "fields": ["client", "photographer","date", "studio_room", "service", "status", "comment", "duration", "start_time", "number_of_people"],
             }
         )
     ]

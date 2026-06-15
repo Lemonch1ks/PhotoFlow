@@ -46,12 +46,6 @@
                                 {{ studio.name }}
                             </h2>
 
-                            {% if studio.location %}
-                                <p class="text-muted mb-2">
-                                    {{ studio.location }}
-                                </p>
-                            {% endif %}
-
                             {% if studio.description %}
                                 <p class="card-text">
                                     {{ studio.description|truncatewords:20 }}

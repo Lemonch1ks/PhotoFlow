@@ -113,36 +113,43 @@ def book_session(request, pk):
         StudioRoom,
         pk=pk,
     )
+    if request.user.role == User.Role.CLIENT:
 
-    if request.method == "POST":
-        form = BookingForm(
-            request.POST,
-            studio=studio,
+        if request.method == "POST":
+            form = BookingForm(
+                request.POST,
+                studio=studio,
+            )
+
+            if form.is_valid():
+                booking = form.save(commit=False)
+
+                booking.client = request.user
+
+                booking.studio_room = studio
+
+                booking.status = "Pending"
+
+                booking.save()
+
+                return redirect("flow:booking-list")
+        else:
+            form = BookingForm(studio=studio)
+
+        return render(
+            request,
+            "photoflow/booking_session.html",
+            {
+                "studio": studio,
+                "form": form,
+            },
         )
-
-        if form.is_valid():
-            booking = form.save(commit=False)
-
-            # Пользователь подставляется автоматически
-            booking.client = request.user
-
-            # Студия берётся из URL
-            booking.studio_room = studio
-
-            # Начальный статус
-            booking.status = "Pending"
-
-            booking.save()
-
-            return redirect("flow:booking-list")
     else:
-        form = BookingForm(studio=studio)
-
-    return render(
-        request,
-        "photoflow/booking_session.html",
-        {
-            "studio": studio,
-            "form": form,
-        },
-    )
+        return render(
+            request,
+            "photoflow/error.html",
+            context={
+                "error_title": "No Permission",
+                "error_message": "You can't create a booking for photo-session as a photographer",
+            }
+        )
