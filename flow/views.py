@@ -125,15 +125,10 @@ def book_session(request, pk):
 
             if form.is_valid():
                 booking = form.save(commit=False)
-
                 booking.client = request.user
-
                 booking.studio_room = studio
-
                 booking.status = "Pending"
-
                 booking.duration = booking.service_duration
-
                 booking.save()
 
                 return redirect("flow:booking-list")

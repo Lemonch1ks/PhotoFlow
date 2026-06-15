@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-
+from datetime import datetime, timedelta
 from flow.models import Booking, User
 
 
@@ -116,6 +116,7 @@ class BookingForm(forms.ModelForm):
                 "max"
             ] = studio.capacity
 
+
     def clean_date(self):
         booking_date = self.cleaned_data["date"]
 
@@ -123,7 +124,6 @@ class BookingForm(forms.ModelForm):
             raise forms.ValidationError(
                 "The booking date cannot be in the past."
             )
-
         return booking_date
 
     def clean_number_of_people(self):
@@ -144,3 +144,65 @@ class BookingForm(forms.ModelForm):
                 "The number of people can not be less than one."
             )
         return number_of_people
+
+    def clean(self):
+        cleaned_data = super().clean()
+
+        photographer = cleaned_data.get("photographer")
+        booking_date = cleaned_data.get("date")
+        start_time = cleaned_data.get("start_time")
+        duration = cleaned_data.get("duration")
+        if not all(
+                (
+                        photographer,
+                        booking_date,
+                        start_time,
+                        duration,
+                )
+        ):
+            return cleaned_data
+
+        new_booking_start = datetime.combine(
+            booking_date,
+            start_time,
+        )
+
+        new_booking_end = new_booking_start + timedelta(
+            hours=duration,
+        )
+
+        existing_bookings = Booking.objects.filter(
+            photographer=photographer,
+            date=booking_date,
+        ).exclude(
+            status="Cancelled",
+        )
+
+        if self.instance.pk:
+            existing_bookings = existing_bookings.exclude(
+                pk=self.instance.pk,
+            )
+
+        for booking in existing_bookings:
+            existing_booking_start = datetime.combine(
+                booking.date,
+                booking.start_time,
+            )
+
+            existing_booking_end = (
+                    existing_booking_start
+                    + timedelta(hours=booking.duration)
+            )
+
+            has_time_conflict = (
+                    new_booking_start < existing_booking_end
+                    and new_booking_end > existing_booking_start
+            )
+
+            if has_time_conflict:
+                raise forms.ValidationError(
+                    "This photographer already has another booking "
+                    "during the selected time."
+                )
+
+        return cleaned_data
