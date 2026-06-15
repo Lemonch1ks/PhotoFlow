@@ -1,4 +1,3 @@
-from multiprocessing import context
 
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -128,7 +127,7 @@ def book_session(request, pk):
                 booking.client = request.user
                 booking.studio_room = studio
                 booking.status = "Pending"
-                booking.duration = booking.service_duration
+                booking.duration = booking.service.duration
                 booking.save()
 
                 return redirect("flow:booking-list")
@@ -160,4 +159,19 @@ def service_list(request):
         request,
         template_name="photoflow/service_list.html",
         context={"services": services},
+    )
+
+def photographer_list(request):
+    photographers = User.objects.filter(role=User.Role.PHOTOGRAPHER).order_by("username")
+    return render(
+        request,
+        "photoflow/photograpger_list.html",
+        context={"photographers": photographers},
+    )
+
+def photographer_detail(request, pk):
+    return render(
+        request,
+        "photoflow/photograpger_detail.html",
+        context={"photographer": User.objects.get(role=User.Role.PHOTOGRAPHER, id=pk) },
     )

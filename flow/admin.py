@@ -13,7 +13,8 @@ class UserAdmin(BaseUserAdmin):
         'email',
         'is_staff',
         'is_active',
-        'role'
+        'role',
+        'profile_image',
     )
     list_filter = (
         'role',
@@ -35,6 +36,7 @@ class UserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "role",
+                    "profile_image",
                 ),
             },
         ),
@@ -49,6 +51,7 @@ class UserAdmin(BaseUserAdmin):
                     "last_name",
                     "email",
                     "role",
+                    "profile_image",
                 ),
             },
         ),

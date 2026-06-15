@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from datetime import datetime, timedelta
 from flow.models import Booking, User
-
+from django.db.models import Q
 
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
@@ -44,7 +44,6 @@ class BookingForm(forms.ModelForm):
             "service",
             "date",
             "start_time",
-            "duration",
             "number_of_people",
             "comment",
         )
@@ -147,11 +146,11 @@ class BookingForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-
+        service = cleaned_data.get("service")
+        duration = service.duration if service else None
         photographer = cleaned_data.get("photographer")
         booking_date = cleaned_data.get("date")
         start_time = cleaned_data.get("start_time")
-        duration = cleaned_data.get("duration")
         if not all(
                 (
                         photographer,
@@ -168,14 +167,17 @@ class BookingForm(forms.ModelForm):
         )
 
         new_booking_end = new_booking_start + timedelta(
-            hours=duration,
+            minutes=duration,
         )
 
-        existing_bookings = Booking.objects.filter(
-            photographer=photographer,
-            date=booking_date,
-        ).exclude(
-            status="Cancelled",
+        existing_bookings = (
+            Booking.objects
+            .filter(date=booking_date)
+            .exclude(status="Cancelled")
+            .filter(
+                Q(photographer=photographer)
+                | Q(studio_room=self.studio)
+            )
         )
 
         if self.instance.pk:
@@ -191,7 +193,7 @@ class BookingForm(forms.ModelForm):
 
             existing_booking_end = (
                     existing_booking_start
-                    + timedelta(hours=booking.duration)
+                    + timedelta(minutes=booking.duration)
             )
 
             has_time_conflict = (
@@ -201,8 +203,8 @@ class BookingForm(forms.ModelForm):
 
             if has_time_conflict:
                 raise forms.ValidationError(
-                    "This photographer already has another booking "
-                    "during the selected time."
+                    "The selected photographer or studio is already "
+                    "booked during this time."
                 )
 
         return cleaned_data
