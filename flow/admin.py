@@ -81,7 +81,7 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "price",
-        "duration_in_hours",
+        "duration_in_minutes",
         "description",
     )
 
@@ -90,8 +90,8 @@ class ServiceAdmin(admin.ModelAdmin):
     )
 
     @admin.display(description="Duration", ordering="duration")
-    def duration_in_hours(self, obj):
-        unit = "hour" if obj.duration == 1 else "hours"
+    def duration_in_minutes(self, obj):
+        unit = "minute" if obj.duration == 1 else "minutes"
         return f"{obj.duration} {unit}"
 
 

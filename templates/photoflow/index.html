@@ -573,6 +573,7 @@
 
             <div class="row g-4">
 
+              {% for service in services %}
                 <div class="col-md-6 col-lg-4">
                     <article class="service-card">
                         <span class="service-icon">
@@ -580,82 +581,31 @@
                         </span>
 
                         <h3 class="h4 fw-bold">
-                            Portrait session
+                          {{ service.name}}
                         </h3>
 
                         <p class="text-secondary">
-                            Professional portraits for personal branding,
-                            social media and creative portfolios.
+                            {{ service.description }}
                         </p>
 
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <span class="fw-bold">
-                                From $120
+                                {{ service.price}}$
                             </span>
 
                             <span class="text-secondary">
-                                60 minutes
+                                {{ service.duration }} minutes
                             </span>
                         </div>
                     </article>
                 </div>
-
-
-                <div class="col-md-6 col-lg-4">
-                    <article class="service-card">
-                        <span class="service-icon">
-                            <i class="bi bi-bag-heart"></i>
-                        </span>
-
-                        <h3 class="h4 fw-bold">
-                            Product photography
-                        </h3>
-
-                        <p class="text-secondary">
-                            Clean commercial images for online stores,
-                            advertising campaigns and catalogues.
-                        </p>
-
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <span class="fw-bold">
-                                From $180
-                            </span>
-
-                            <span class="text-secondary">
-                                90 minutes
-                            </span>
-                        </div>
-                    </article>
-                </div>
-
-
-                <div class="col-md-6 col-lg-4">
-                    <article class="service-card">
-                        <span class="service-icon">
-                            <i class="bi bi-people"></i>
-                        </span>
-
-                        <h3 class="h4 fw-bold">
-                            Family session
-                        </h3>
-
-                        <p class="text-secondary">
-                            Natural and emotional family photographs
-                            in a comfortable studio environment.
-                        </p>
-
-                        <div class="d-flex justify-content-between align-items-center mt-4">
-                            <span class="fw-bold">
-                                From $150
-                            </span>
-
-                            <span class="text-secondary">
-                                75 minutes
-                            </span>
-                        </div>
-                    </article>
-                </div>
-
+                {% empty %}
+                  <div class="col-12">
+                    <div class="alert alert-secondary">
+                      No services available
+                    </div>
+                  </div>
+              {% endfor %}
             </div>
         </div>
     </section>

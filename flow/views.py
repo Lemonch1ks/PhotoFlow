@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
 from flow.forms import SignUpForm, BookingForm
-from flow.models import StudioRoom, User, Booking
+from flow.models import StudioRoom, User, Booking, Service
 
 
 def index(request):
@@ -13,6 +13,7 @@ def index(request):
         "studio_room_count": StudioRoom.objects.all().count(),
         "photographers_count": User.objects.filter(role__icontains="photographer").count(),
         "session_count": Booking.objects.all().count(),
+        "services": Service.objects.all(),
     }
 
 
@@ -129,6 +130,8 @@ def book_session(request, pk):
                 booking.studio_room = studio
 
                 booking.status = "Pending"
+
+                booking.duration = booking.service_duration
 
                 booking.save()
 

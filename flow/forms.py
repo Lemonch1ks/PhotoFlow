@@ -72,13 +72,7 @@ class BookingForm(forms.ModelForm):
                     "type": "time",
                 }
             ),
-            "duration": forms.NumberInput(
-                attrs={
-                    "class": "form-control",
-                    "min": 1,
-                    "max": 24,
-                }
-            ),
+
             "number_of_people": forms.NumberInput(
                 attrs={
                     "class": "form-control",
@@ -145,5 +139,8 @@ class BookingForm(forms.ModelForm):
                 f"This studio can accommodate a maximum "
                 f"of {self.studio.capacity} people."
             )
-
+        if number_of_people < 1:
+            raise forms.ValidationError(
+                "The number of people can not be less than one."
+            )
         return number_of_people
