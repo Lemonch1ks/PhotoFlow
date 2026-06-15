@@ -170,8 +170,16 @@ def photographer_list(request):
     )
 
 def photographer_detail(request, pk):
+    photographer = get_object_or_404(
+        User,
+        pk=pk,
+        role=User.Role.PHOTOGRAPHER,
+    )
+
     return render(
         request,
         "photoflow/photograpger_detail.html",
-        context={"photographer": User.objects.get(role=User.Role.PHOTOGRAPHER, id=pk) },
+        {
+            "photographer": photographer,
+        },
     )
