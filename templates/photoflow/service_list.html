@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+  <style>
+    .services-section {
+      background-color: #f8f9fa;
+      min-height: 80vh;
+  }
+
+  .service-card {
+    overflow: hidden;
+    border-radius: 16px;
+    min-height: 230px;
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+  .service-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
+  }
+
+
+  .service-card .card-body {
+      padding: 1.5rem;
+  }
+
+  .service-card .card-title {
+      font-weight: 600;
+  }
+
+  .empty-state {
+      background-color: white;
+      border-radius: 16px;
+      border: 1px dashed #ced4da;
+  }
+  </style>
+{% endblock %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<section class="services-section py-5">
+    <div class="container">
+
+        <div class="text-center mb-5">
+            <h1 class="fw-bold">Our Services</h1>
+            <p class="text-muted">
+                Choose a photography service that matches your needs.
+            </p>
+        </div>
+
+            {% if services %}
+        <div class="row g-4">
+            {% for service in services %}
+                <div class="col-12 col-md-6 col-lg-4">
+                    <div class="card service-card h-100 border-0 shadow-sm">
+
+                        <div class="card-body d-flex flex-column">
+                            <h2 class="card-title h4">
+                                {{ service.name }}
+                            </h2>
+
+                            <p class="card-text text-muted">
+                                {{ service.description|truncatewords:25 }}
+                            </p>
+
+                            <div class="service-info mt-auto">
+                                {% if service.duration %}
+                                    <p class="mb-2">
+                                        <strong>Duration:</strong>
+                                        {{ service.duration }} minutes
+                                    </p>
+                                {% endif %}
+
+                                <p class="mb-0">
+                                    <strong>Price:</strong>
+                                    {{ service.price }} UAH
+                                </p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="empty-state text-center py-5">
+            <h2 class="h4">No services available</h2>
+
+            <p class="text-muted mb-0">
+                Services will appear here when they are added.
+            </p>
+        </div>
+    {% endif %}
+    </div>
+</section>
+{% endblock %}

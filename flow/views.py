@@ -1,3 +1,5 @@
+from multiprocessing import context
+
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
@@ -7,13 +9,12 @@ from flow.models import StudioRoom, User, Booking, Service
 
 
 def index(request):
-    studios = StudioRoom.objects.order_by("-id")[:3]
     context = {
-        "studios": studios,
+        "studios": StudioRoom.objects.order_by("-id")[:3],
         "studio_room_count": StudioRoom.objects.all().count(),
         "photographers_count": User.objects.filter(role__icontains="photographer").count(),
         "session_count": Booking.objects.all().count(),
-        "services": Service.objects.all(),
+        "services": Service.objects.order_by("name")[:3],
     }
 
 
@@ -156,3 +157,12 @@ def book_session(request, pk):
                 "error_message": "You can't create a booking for photo-session as a photographer",
             }
         )
+
+
+def service_list(request):
+    services = Service.objects.all().order_by("name")
+    return render(
+        request,
+        template_name="photoflow/service_list.html",
+        context={"services": services},
+    )
