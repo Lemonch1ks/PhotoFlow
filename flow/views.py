@@ -163,7 +163,7 @@ def book_session(request, pk):
             "photoflow/error.html",
             context={
                 "error_title": "No Permission",
-                "error_message": "You can't create a booking for photo-session as a photographer",
+                "error_message": "You cant create a booking for photo-session as a photographer",
             }
         )
 
