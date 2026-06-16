@@ -1,6 +1,7 @@
 
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
 
 from flow.forms import SignUpForm, BookingForm
@@ -68,13 +69,21 @@ def studio_list(request):
     if query:
         studios = studios.filter(name__icontains=query)
 
+    paginator = Paginator(studios, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "studios": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
+
     return render(
         request,
         "photoflow/studio_list.html",
-        {
-            "studios": studios,
-            "query": query,
-        }
+        context=context
     )
 
 @login_required
@@ -168,11 +177,23 @@ def service_list(request):
     if query:
         services = services.filter(name__icontains=query)
 
+    paginator = Paginator(services, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context ={
+        "services": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
+
     return render(
         request,
         template_name="photoflow/service_list.html",
-        context={"services": services, "query": query},
+        context=context
     )
+
 
 def photographer_list(request):
     query = request.GET.get("q", "").strip()
@@ -184,10 +205,20 @@ def photographer_list(request):
             username__icontains=query
         )
 
+    paginator = Paginator(photographers, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context ={
+        "photographers": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
     return render(
         request,
         "photoflow/photograpger_list.html",
-        context={"photographers": photographers, "query": query},
+        context=context
     )
 
 

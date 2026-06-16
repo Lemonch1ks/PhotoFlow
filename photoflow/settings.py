@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'flow',
     "crispy_forms",
     "crispy_bootstrap4",
+    "flow.templatetags",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
