@@ -105,10 +105,15 @@ class BookingTests(TestCase):
         )
 
     def test_client_can_create_booking(self):
+        self.client.force_login(self.client_user)
 
         booking_date = timezone.localdate() + timedelta(days=1)
 
-        form = BookingForm(
+        response = self.client.post(
+            reverse(
+                "flow:book-session",
+                kwargs={"pk": self.studio.pk},
+            ),
             data={
                 "photographer": self.photographer.pk,
                 "service": self.service.pk,
@@ -117,22 +122,23 @@ class BookingTests(TestCase):
                 "number_of_people": 2,
                 "comment": "",
             },
-            studio=self.studio,
         )
 
-        self.assertTrue(form.is_valid())
+        self.assertRedirects(
+            response,
+            reverse("flow:booking-list"),
+        )
 
-        booking = form.save(commit=False)
-        booking.client = self.client_user
-        booking.studio_room = self.studio
-        booking.duration = self.service.duration
-        booking.status = "Pending"
-        booking.save()
+        self.assertEqual(Booking.objects.count(), 1)
 
-        self.assertEqual(self.client_user, booking.client)
-        self.assertEqual(self.studio, booking.studio_room)
-        self.assertEqual(self.service, booking.service)
-        self.assertEqual(self.photographer, booking.photographer)
+        booking = Booking.objects.get()
+
+        self.assertEqual(booking.client, self.client_user)
+        self.assertEqual(booking.studio_room, self.studio)
+        self.assertEqual(booking.photographer, self.photographer)
+        self.assertEqual(booking.service, self.service)
+        self.assertEqual(booking.status, "Pending")
+        self.assertEqual(booking.duration, self.service.duration)
 
     def test_photographer_cannot_create_booking(self):
         self.client.force_login(self.photographer)
