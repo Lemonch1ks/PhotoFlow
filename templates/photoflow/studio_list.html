@@ -19,12 +19,21 @@
                 Browse available photography studios.
             </p>
         </div>
+        <form method="get" action="{% url 'flow:studio-list' %}">
+            <div class="input-group mb-4">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ query }}"
+                    class="form-control"
+                    placeholder="Search studios by name..."
+                >
 
-        {% if user.is_staff %}
-            <a href="#" class="btn btn-primary">
-                Add studio
-            </a>
-        {% endif %}
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </form>
     </div>
 
     {% if studios %}

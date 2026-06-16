@@ -61,13 +61,19 @@ def studio_detail(request, studio_id):
     )
 
 def studio_list(request):
+    query = request.GET.get("q", "").strip()
+
     studios = StudioRoom.objects.all()
+
+    if query:
+        studios = studios.filter(name__icontains=query)
 
     return render(
         request,
         "photoflow/studio_list.html",
         {
             "studios": studios,
+            "query": query,
         }
     )
 
@@ -154,20 +160,36 @@ def book_session(request, pk):
 
 
 def service_list(request):
+
+    query = request.GET.get("q", "").strip()
+
     services = Service.objects.all().order_by("name")
+
+    if query:
+        services = services.filter(name__icontains=query)
+
     return render(
         request,
         template_name="photoflow/service_list.html",
-        context={"services": services},
+        context={"services": services, "query": query},
     )
 
 def photographer_list(request):
+    query = request.GET.get("q", "").strip()
+
     photographers = User.objects.filter(role=User.Role.PHOTOGRAPHER).order_by("username")
+
+    if query:
+        photographers = photographers.filter(
+            username__icontains=query
+        )
+
     return render(
         request,
         "photoflow/photograpger_list.html",
-        context={"photographers": photographers},
+        context={"photographers": photographers, "query": query},
     )
+
 
 def photographer_detail(request, pk):
     photographer = get_object_or_404(

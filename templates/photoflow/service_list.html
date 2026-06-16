@@ -56,8 +56,23 @@
                 Choose a photography service that matches your needs.
             </p>
         </div>
+          <form method="get" action="{% url 'flow:service-list' %}">
+            <div class="input-group mb-4">
+                <input
+                    type="search"
+                    name="q"
+                    value="{{ query }}"
+                    class="form-control"
+                    placeholder="Search services..."
+                >
 
-            {% if services %}
+                <button type="submit" class="btn btn-primary">
+                    Search
+                </button>
+            </div>
+        </form>
+
+      {% if services %}
         <div class="row g-4">
             {% for service in services %}
                 <div class="col-12 col-md-6 col-lg-4">
