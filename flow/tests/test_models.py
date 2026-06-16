@@ -1,4 +1,4 @@
-from datetime import timezone, timedelta, time
+from datetime import timedelta, time
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -61,4 +61,7 @@ class ModelTest(TestCase):
             duration=60,
             number_of_people=3,
         )
-        self.assertEqual(str(booking), f"Test studio Portrait session {booking_date}")
+        self.assertEqual(
+            str(booking),
+            f"Test studio Portrait session {booking_date}"
+        )

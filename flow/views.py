@@ -12,11 +12,12 @@ def index(request):
     context = {
         "studios": StudioRoom.objects.order_by("-id")[:3],
         "studio_room_count": StudioRoom.objects.all().count(),
-        "photographers_count": User.objects.filter(role__icontains="photographer").count(),
+        "photographers_count": User.objects.filter(
+            role__icontains="photographer"
+        ).count(),
         "session_count": Booking.objects.all().count(),
         "services": Service.objects.order_by("name")[:3],
     }
-
 
     return render(
         request,
@@ -61,6 +62,7 @@ def studio_detail(request, studio_id):
         },
     )
 
+
 def studio_list(request):
     query = request.GET.get("q", "").strip()
 
@@ -85,6 +87,7 @@ def studio_list(request):
         "photoflow/studio_list.html",
         context=context
     )
+
 
 @login_required
 def booking_list(request):
@@ -163,7 +166,9 @@ def book_session(request, pk):
             "photoflow/error.html",
             context={
                 "error_title": "No Permission",
-                "error_message": "You cant create a booking for photo-session as a photographer",
+                "error_message":
+                    "You cant create a booking"
+                    " for photo-session as a photographer",
             }
         )
 
@@ -181,7 +186,7 @@ def service_list(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context ={
+    context = {
         "services": page_obj,
         "paginator": paginator,
         "page_obj": page_obj,
@@ -198,7 +203,9 @@ def service_list(request):
 def photographer_list(request):
     query = request.GET.get("q", "").strip()
 
-    photographers = User.objects.filter(role=User.Role.PHOTOGRAPHER).order_by("username")
+    photographers = User.objects.filter(
+        role=User.Role.PHOTOGRAPHER
+    ).order_by("username")
 
     if query:
         photographers = photographers.filter(
@@ -209,7 +216,7 @@ def photographer_list(request):
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    context ={
+    context = {
         "photographers": page_obj,
         "paginator": paginator,
         "page_obj": page_obj,

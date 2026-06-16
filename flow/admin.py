@@ -7,17 +7,17 @@ from flow.models import User, StudioRoom, Service, Booking
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = (
-        'username',
-        'first_name',
-        'last_name',
-        'email',
-        'is_staff',
-        'is_active',
-        'role',
-        'profile_image',
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_staff",
+        "is_active",
+        "role",
+        "profile_image",
     )
     list_filter = (
-        'role',
+        "role",
     )
     search_fields = (
         "username",
@@ -57,14 +57,15 @@ class UserAdmin(BaseUserAdmin):
         ),
     )
 
+
 @admin.register(StudioRoom)
 class StudioRoomAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "price_per_hour",
-        'capacity',
+        "capacity",
         "image",
-        'description'
+        "description"
     )
 
     search_fields = (
@@ -123,7 +124,18 @@ class BookingAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["client", "photographer","date", "studio_room", "service", "status", "comment", "duration", "start_time", "number_of_people"],
+                "fields": [
+                    "client",
+                    "photographer",
+                    "date",
+                    "studio_room",
+                    "service",
+                    "status",
+                    "comment",
+                    "duration",
+                    "start_time",
+                    "number_of_people"
+                ],
             }
         )
     ]

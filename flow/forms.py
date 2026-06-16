@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 from flow.models import Booking, User
 from django.db.models import Q
 
+
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
@@ -115,7 +116,6 @@ class BookingForm(forms.ModelForm):
                 "max"
             ] = studio.capacity
 
-
     def clean_date(self):
         booking_date = self.cleaned_data["date"]
 
@@ -153,10 +153,10 @@ class BookingForm(forms.ModelForm):
         start_time = cleaned_data.get("start_time")
         if not all(
                 (
-                        photographer,
-                        booking_date,
-                        start_time,
-                        duration,
+                    photographer,
+                    booking_date,
+                    start_time,
+                    duration,
                 )
         ):
             return cleaned_data
@@ -192,13 +192,13 @@ class BookingForm(forms.ModelForm):
             )
 
             existing_booking_end = (
-                    existing_booking_start
-                    + timedelta(minutes=booking.duration)
+                existing_booking_start
+                + timedelta(minutes=booking.duration)
             )
 
             has_time_conflict = (
-                    new_booking_start < existing_booking_end
-                    and new_booking_end > existing_booking_start
+                new_booking_start < existing_booking_end
+                and new_booking_end > existing_booking_start
             )
 
             if has_time_conflict:

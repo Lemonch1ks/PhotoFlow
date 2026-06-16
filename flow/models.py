@@ -7,7 +7,6 @@ from django.db import models
 from photoflow import settings
 
 
-
 class User(AbstractUser):
     class Role(models.TextChoices):
         CLIENT = "client", "Client"
@@ -18,7 +17,11 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.CLIENT,
     )
-    profile_image = models.ImageField(upload_to="images/", blank=True, null=True)
+    profile_image = models.ImageField(
+        upload_to="images/",
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.username
@@ -62,18 +65,24 @@ class Booking(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateField()
     start_time = models.TimeField(default=time(0, 0),)
-    duration = models.IntegerField(default=1, validators=[MinValueValidator(1)])
-    number_of_people = models.IntegerField(default=1, validators=[MinValueValidator(1)])
+    duration = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
+    number_of_people = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
     status = models.CharField(
         null=True,
         max_length=20,
         choices={
             "Pending": "Pending",
-            "Confirmed": 'Confirmed',
+            "Confirmed": "Confirmed",
             "Completed": "Completed",
             "Cancelled": "Cancelled",
         },
-        default= "Pending",
+        default="Pending",
 
     )
     comment = models.TextField(null=True, blank=True)

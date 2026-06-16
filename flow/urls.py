@@ -32,11 +32,7 @@ urlpatterns = [
         studio_list,
         name="studio-list",
     ),
-    path(
-    "studios/<int:pk>/book/",
-    book_session,
-    name="book-session",
-    ),
+    path("studios/<int:pk>/book/", book_session, name="book-session"),
     path(
         "photographers/",
         photographer_list,
