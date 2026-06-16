@@ -28,7 +28,7 @@ urlpatterns = [
         name="studio-detail",
     ),
     path(
-        "studios/list",
+        "studios/list/",
         studio_list,
         name="studio-list",
     ),
