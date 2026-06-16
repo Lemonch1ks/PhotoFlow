@@ -1,10 +1,10 @@
 from datetime import time
 
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from photoflow import settings
-
 
 
 class User(AbstractUser):
@@ -17,6 +17,12 @@ class User(AbstractUser):
         choices=Role.choices,
         default=Role.CLIENT,
     )
+    profile_image = models.ImageField(
+        upload_to="images/",
+        blank=True,
+        null=True
+    )
+
     def __str__(self):
         return self.username
 
@@ -24,8 +30,8 @@ class User(AbstractUser):
 class StudioRoom(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True, null=True)
-    price_per_hour = models.IntegerField()
-    capacity = models.IntegerField()
+    price_per_hour = models.IntegerField(validators=[MinValueValidator(1)])
+    capacity = models.IntegerField(validators=[MinValueValidator(1)])
     image = models.ImageField(upload_to="images/", blank=True, null=True)
 
     def __str__(self):
@@ -59,18 +65,24 @@ class Booking(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
     date = models.DateField()
     start_time = models.TimeField(default=time(0, 0),)
-    duration = models.IntegerField(default=1)
-    number_of_people = models.IntegerField(default=1)
+    duration = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
+    number_of_people = models.IntegerField(
+        default=1,
+        validators=[MinValueValidator(1)]
+    )
     status = models.CharField(
         null=True,
         max_length=20,
         choices={
             "Pending": "Pending",
-            "Confirmed": 'Confirmed',
+            "Confirmed": "Confirmed",
             "Completed": "Completed",
             "Cancelled": "Cancelled",
         },
-        default= "Pending",
+        default="Pending",
 
     )
     comment = models.TextField(null=True, blank=True)

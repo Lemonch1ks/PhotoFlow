@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-
+from datetime import datetime, timedelta
 from flow.models import Booking, User
+from django.db.models import Q
 
 
 class SignUpForm(UserCreationForm):
@@ -39,14 +40,11 @@ class BookingForm(forms.ModelForm):
     class Meta:
         model = Booking
 
-        # client, studio_room и status
-        # устанавливаются автоматически во view
         fields = (
             "photographer",
             "service",
             "date",
             "start_time",
-            "duration",
             "number_of_people",
             "comment",
         )
@@ -74,13 +72,7 @@ class BookingForm(forms.ModelForm):
                     "type": "time",
                 }
             ),
-            "duration": forms.NumberInput(
-                attrs={
-                    "class": "form-control",
-                    "min": 1,
-                    "max": 24,
-                }
-            ),
+
             "number_of_people": forms.NumberInput(
                 attrs={
                     "class": "form-control",
@@ -131,7 +123,6 @@ class BookingForm(forms.ModelForm):
             raise forms.ValidationError(
                 "The booking date cannot be in the past."
             )
-
         return booking_date
 
     def clean_number_of_people(self):
@@ -147,5 +138,73 @@ class BookingForm(forms.ModelForm):
                 f"This studio can accommodate a maximum "
                 f"of {self.studio.capacity} people."
             )
-
+        if number_of_people < 1:
+            raise forms.ValidationError(
+                "The number of people can not be less than one."
+            )
         return number_of_people
+
+    def clean(self):
+        cleaned_data = super().clean()
+        service = cleaned_data.get("service")
+        duration = service.duration if service else None
+        photographer = cleaned_data.get("photographer")
+        booking_date = cleaned_data.get("date")
+        start_time = cleaned_data.get("start_time")
+        if not all(
+                (
+                    photographer,
+                    booking_date,
+                    start_time,
+                    duration,
+                )
+        ):
+            return cleaned_data
+
+        new_booking_start = datetime.combine(
+            booking_date,
+            start_time,
+        )
+
+        new_booking_end = new_booking_start + timedelta(
+            minutes=duration,
+        )
+
+        existing_bookings = (
+            Booking.objects
+            .filter(date=booking_date)
+            .exclude(status="Cancelled")
+            .filter(
+                Q(photographer=photographer)
+                | Q(studio_room=self.studio)
+            )
+        )
+
+        if self.instance.pk:
+            existing_bookings = existing_bookings.exclude(
+                pk=self.instance.pk,
+            )
+
+        for booking in existing_bookings:
+            existing_booking_start = datetime.combine(
+                booking.date,
+                booking.start_time,
+            )
+
+            existing_booking_end = (
+                existing_booking_start
+                + timedelta(minutes=booking.duration)
+            )
+
+            has_time_conflict = (
+                new_booking_start < existing_booking_end
+                and new_booking_end > existing_booking_start
+            )
+
+            if has_time_conflict:
+                raise forms.ValidationError(
+                    "The selected photographer or studio is already "
+                    "booked during this time."
+                )
+
+        return cleaned_data

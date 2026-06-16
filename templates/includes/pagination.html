@@ -1,0 +1,101 @@
+{% load query_transform %}
+
+{% if page_obj.has_other_pages %}
+  <nav aria-label="Pagination">
+    <ul class="pagination justify-content-center">
+
+      {# Previous button #}
+      <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+        {% if page_obj.has_previous %}
+          <a
+            class="page-link"
+            href="?{% query_transform request page=page_obj.previous_page_number %}"
+            aria-label="Previous page"
+          >
+            Previous
+          </a>
+        {% else %}
+          <span class="page-link">Previous</span>
+        {% endif %}
+      </li>
+
+      {# First page and left ellipsis #}
+      {% if page_obj.number > 3 %}
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?{% query_transform request page=1 %}"
+          >
+            1
+          </a>
+        </li>
+
+        {% if page_obj.number > 4 %}
+          <li class="page-item disabled">
+            <span class="page-link">…</span>
+          </li>
+        {% endif %}
+      {% endif %}
+
+      {# Pages around the current page #}
+      {% for page_number in paginator.page_range %}
+        {% if page_number >= page_obj.number|add:"-2" and page_number <= page_obj.number|add:"2" %}
+          <li
+            class="page-item {% if page_number == page_obj.number %}active{% endif %}"
+          >
+            {% if page_number == page_obj.number %}
+              <span class="page-link" aria-current="page">
+                {{ page_number }}
+              </span>
+            {% else %}
+              <a
+                class="page-link"
+                href="?{% query_transform request page=page_number %}"
+              >
+                {{ page_number }}
+              </a>
+            {% endif %}
+          </li>
+        {% endif %}
+      {% endfor %}
+
+      {# Right ellipsis and last page #}
+      {% if page_obj.number < paginator.num_pages|add:"-2" %}
+        {% if page_obj.number < paginator.num_pages|add:"-3" %}
+          <li class="page-item disabled">
+            <span class="page-link">…</span>
+          </li>
+        {% endif %}
+
+        <li class="page-item">
+          <a
+            class="page-link"
+            href="?{% query_transform request page=paginator.num_pages %}"
+          >
+            {{ paginator.num_pages }}
+          </a>
+        </li>
+      {% endif %}
+
+      {# Next button #}
+      <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+        {% if page_obj.has_next %}
+          <a
+            class="page-link"
+            href="?{% query_transform request page=page_obj.next_page_number %}"
+            aria-label="Next page"
+          >
+            Next
+          </a>
+        {% else %}
+          <span class="page-link">Next</span>
+        {% endif %}
+      </li>
+
+    </ul>
+
+    <p class="text-center text-muted small">
+      Page {{ page_obj.number }} of {{ paginator.num_pages }}
+    </p>
+  </nav>
+{% endif %}

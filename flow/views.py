@@ -1,20 +1,23 @@
+
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import redirect, render, get_object_or_404
 
 from flow.forms import SignUpForm, BookingForm
-from flow.models import StudioRoom, User, Booking
+from flow.models import StudioRoom, User, Booking, Service
 
 
 def index(request):
-    studios = StudioRoom.objects.order_by("-id")[:3]
     context = {
-        "studios": studios,
+        "studios": StudioRoom.objects.order_by("-id")[:3],
         "studio_room_count": StudioRoom.objects.all().count(),
-        "photographers_count": User.objects.filter(role__icontains="photographer").count(),
+        "photographers_count": User.objects.filter(
+            role__icontains="photographer"
+        ).count(),
         "session_count": Booking.objects.all().count(),
+        "services": Service.objects.order_by("name")[:3],
     }
-
 
     return render(
         request,
@@ -59,16 +62,32 @@ def studio_detail(request, studio_id):
         },
     )
 
+
 def studio_list(request):
+    query = request.GET.get("q", "").strip()
+
     studios = StudioRoom.objects.all()
+
+    if query:
+        studios = studios.filter(name__icontains=query)
+
+    paginator = Paginator(studios, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "studios": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
 
     return render(
         request,
         "photoflow/studio_list.html",
-        {
-            "studios": studios,
-        }
+        context=context
     )
+
 
 @login_required
 def booking_list(request):
@@ -113,36 +132,114 @@ def book_session(request, pk):
         StudioRoom,
         pk=pk,
     )
+    if request.user.role == User.Role.CLIENT:
 
-    if request.method == "POST":
-        form = BookingForm(
-            request.POST,
-            studio=studio,
+        if request.method == "POST":
+            form = BookingForm(
+                request.POST,
+                studio=studio,
+            )
+
+            if form.is_valid():
+                booking = form.save(commit=False)
+                booking.client = request.user
+                booking.studio_room = studio
+                booking.status = "Pending"
+                booking.duration = booking.service.duration
+                booking.save()
+
+                return redirect("flow:booking-list")
+        else:
+            form = BookingForm(studio=studio)
+
+        return render(
+            request,
+            "photoflow/booking_session.html",
+            {
+                "studio": studio,
+                "form": form,
+            },
+        )
+    else:
+        return render(
+            request,
+            "photoflow/error.html",
+            context={
+                "error_title": "No Permission",
+                "error_message":
+                    "You cant create a booking"
+                    " for photo-session as a photographer",
+            }
         )
 
-        if form.is_valid():
-            booking = form.save(commit=False)
 
-            # Пользователь подставляется автоматически
-            booking.client = request.user
+def service_list(request):
 
-            # Студия берётся из URL
-            booking.studio_room = studio
+    query = request.GET.get("q", "").strip()
 
-            # Начальный статус
-            booking.status = "Pending"
+    services = Service.objects.all().order_by("name")
 
-            booking.save()
+    if query:
+        services = services.filter(name__icontains=query)
 
-            return redirect("flow:booking-list")
-    else:
-        form = BookingForm(studio=studio)
+    paginator = Paginator(services, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "services": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
 
     return render(
         request,
-        "photoflow/booking_session.html",
+        template_name="photoflow/service_list.html",
+        context=context
+    )
+
+
+def photographer_list(request):
+    query = request.GET.get("q", "").strip()
+
+    photographers = User.objects.filter(
+        role=User.Role.PHOTOGRAPHER
+    ).order_by("username")
+
+    if query:
+        photographers = photographers.filter(
+            username__icontains=query
+        )
+
+    paginator = Paginator(photographers, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {
+        "photographers": page_obj,
+        "paginator": paginator,
+        "page_obj": page_obj,
+        "query": query,
+    }
+    return render(
+        request,
+        "photoflow/photograpger_list.html",
+        context=context
+    )
+
+
+def photographer_detail(request, pk):
+    photographer = get_object_or_404(
+        User,
+        pk=pk,
+        role=User.Role.PHOTOGRAPHER,
+    )
+
+    return render(
+        request,
+        "photoflow/photograpger_detail.html",
         {
-            "studio": studio,
-            "form": form,
+            "photographer": photographer,
         },
     )

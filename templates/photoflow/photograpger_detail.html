@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+    {{ photographer.get_full_name|default:photographer.username }}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .photographer-detail-section {
+        min-height: 80vh;
+        background-color: #f8f9fa;
+    }
+
+    .photographer-detail-card {
+        overflow: hidden;
+        border: 0;
+        border-radius: 20px;
+        background-color: white;
+    }
+
+    .photographer-image-wrapper {
+        position: relative;
+        height: 100%;
+        min-height: 480px;
+        background-color: #e9ecef;
+    }
+
+    .photographer-image {
+        width: 100%;
+        height: 100%;
+        min-height: 480px;
+        object-fit: cover;
+    }
+
+    .photographer-placeholder {
+        width: 100%;
+        min-height: 480px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e9ecef;
+        color: #6c757d;
+        font-size: 8rem;
+        font-weight: 600;
+    }
+
+    .availability-badge {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+    }
+
+    .photographer-content {
+        padding: 3rem;
+    }
+
+    .photographer-username {
+        font-size: 1rem;
+        color: #6c757d;
+    }
+
+    .photographer-description {
+        color: #6c757d;
+        line-height: 1.7;
+    }
+
+    .photographer-info {
+        padding: 1rem 0;
+        border-top: 1px solid #e9ecef;
+    }
+
+    .photographer-info:last-child {
+        border-bottom: 1px solid #e9ecef;
+    }
+
+    .info-label {
+        margin-bottom: 0.25rem;
+        color: #6c757d;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05rem;
+    }
+
+    .info-value {
+        margin-bottom: 0;
+        font-weight: 600;
+    }
+
+    @media (max-width: 991.98px) {
+        .photographer-image-wrapper,
+        .photographer-image,
+        .photographer-placeholder {
+            min-height: 380px;
+        }
+
+        .photographer-content {
+            padding: 2rem;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+        .photographer-image-wrapper,
+        .photographer-image,
+        .photographer-placeholder {
+            min-height: 300px;
+        }
+
+        .photographer-content {
+            padding: 1.5rem;
+        }
+
+        .photographer-placeholder {
+            font-size: 6rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="photographer-detail-section py-5">
+    <div class="container">
+
+        <div class="mb-4">
+            <a
+                href="{% url 'flow:photographer-list' %}"
+                class="btn btn-outline-secondary"
+            >
+                ← Back to photographers
+            </a>
+        </div>
+
+        <div class="card photographer-detail-card shadow-sm">
+            <div class="row g-0">
+
+                <div class="col-lg-5">
+                    <div class="photographer-image-wrapper">
+
+                        {% if photographer.profile_image %}
+                            <img
+                                src="{{ photographer.profile_image.url }}"
+                                class="photographer-image"
+                                alt="{{ photographer.get_full_name|default:photographer.username }}"
+                            >
+                        {% else %}
+                            <div class="photographer-placeholder">
+                                {{ photographer.username|first|upper }}
+                            </div>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <div class="photographer-content d-flex flex-column h-100">
+
+                        <div>
+                            <p class="photographer-username mb-2">
+                                @{{ photographer.username }}
+                            </p>
+
+                            <h1 class="display-5 fw-bold mb-3">
+                                {% if photographer.get_full_name %}
+                                    {{ photographer.get_full_name }}
+                                {% else %}
+                                    {{ photographer.username }}
+                                {% endif %}
+                            </h1>
+
+                            <p class="lead text-muted mb-4">
+                                Professional photographer
+                            </p>
+
+
+                            {% if photographer.email %}
+                                <div class="photographer-info">
+                                    <p class="info-label">Email</p>
+
+                                    <p class="info-value">
+                                        {{ photographer.email }}
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
+
+                            {% if photographer.is_available %}
+                                <a
+                                    href="{% url 'flow:booking-create' %}?photographer={{ photographer.pk }}"
+                                    class="btn btn-dark btn-lg flex-grow-1"
+                                >
+                                    Book photographer
+                                </a>
+                            {% endif %}
+
+                            <a
+                                href="{% url 'flow:photographer-list' %}"
+                                class="btn btn-outline-dark btn-lg flex-grow-1"
+                            >
+                                View all photographers
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

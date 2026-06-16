@@ -7,16 +7,17 @@ from flow.models import User, StudioRoom, Service, Booking
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
     list_display = (
-        'username',
-        'first_name',
-        'last_name',
-        'email',
-        'is_staff',
-        'is_active',
-        'role'
+        "username",
+        "first_name",
+        "last_name",
+        "email",
+        "is_staff",
+        "is_active",
+        "role",
+        "profile_image",
     )
     list_filter = (
-        'role',
+        "role",
     )
     search_fields = (
         "username",
@@ -35,6 +36,7 @@ class UserAdmin(BaseUserAdmin):
             {
                 "fields": (
                     "role",
+                    "profile_image",
                 ),
             },
         ),
@@ -49,19 +51,21 @@ class UserAdmin(BaseUserAdmin):
                     "last_name",
                     "email",
                     "role",
+                    "profile_image",
                 ),
             },
         ),
     )
+
 
 @admin.register(StudioRoom)
 class StudioRoomAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "price_per_hour",
-        'capacity',
+        "capacity",
         "image",
-        'description'
+        "description"
     )
 
     search_fields = (
@@ -81,7 +85,7 @@ class ServiceAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "price",
-        "duration_in_hours",
+        "duration_in_minutes",
         "description",
     )
 
@@ -90,8 +94,8 @@ class ServiceAdmin(admin.ModelAdmin):
     )
 
     @admin.display(description="Duration", ordering="duration")
-    def duration_in_hours(self, obj):
-        unit = "hour" if obj.duration == 1 else "hours"
+    def duration_in_minutes(self, obj):
+        unit = "minute" if obj.duration == 1 else "minutes"
         return f"{obj.duration} {unit}"
 
 
@@ -120,7 +124,18 @@ class BookingAdmin(admin.ModelAdmin):
         (
             None,
             {
-                "fields": ["client", "photographer", "studio_room", "service", "status", "comment", "duration", "start_time", "number_of_people"],
+                "fields": [
+                    "client",
+                    "photographer",
+                    "date",
+                    "studio_room",
+                    "service",
+                    "status",
+                    "comment",
+                    "duration",
+                    "start_time",
+                    "number_of_people"
+                ],
             }
         )
     ]
