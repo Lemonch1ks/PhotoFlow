@@ -2,46 +2,46 @@ from django.urls import path
 from django.conf.urls.static import static
 from django.conf import settings
 from flow.views import (
-    index,
-    sign_up,
-    studio_detail,
-    studio_list,
-    booking_list,
-    book_session,
-    service_list,
-    photographer_list,
-    photographer_detail,
+    IndexView,
+    SignUpView,
+    StudioDetailView,
+    StudioListView,
+    BookingListView,
+    BookSessionView,
+    ServiceListView,
+    PhotographerListView,
+    PhotographerDetailView,
 )
 
 
 app_name = "flow"
 
 urlpatterns = [
-    path("", index, name="index"),
-    path("sign-up/", sign_up, name="signup"),
-    path("bookings/", booking_list, name="booking-list"),
-    path("service_list/", service_list, name="service-list"),
+    path("", IndexView.as_view(), name="index"),
+    path("sign-up/", SignUpView.as_view(), name="signup"),
+    path("bookings/", BookingListView.as_view(), name="booking-list"),
+    path("service_list/", ServiceListView.as_view(), name="service-list"),
 
 
     path(
         "studios/<int:studio_id>/",
-        studio_detail,
+        StudioDetailView.as_view(),
         name="studio-detail",
     ),
     path(
         "studios/list/",
-        studio_list,
+        StudioListView.as_view(),
         name="studio-list",
     ),
-    path("studios/<int:pk>/book/", book_session, name="book-session"),
+    path("studios/<int:pk>/book/", BookSessionView.as_view(), name="book-session"),
     path(
         "photographers/",
-        photographer_list,
+        PhotographerListView.as_view(),
         name="photographer-list",
     ),
     path(
         "photographers/<int:pk>/",
-        photographer_detail,
+        PhotographerDetailView.as_view(),
         name="photographer-detail",
     ),
 ]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
