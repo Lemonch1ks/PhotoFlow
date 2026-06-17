@@ -33,7 +33,11 @@ urlpatterns = [
         StudioListView.as_view(),
         name="studio-list",
     ),
-    path("studios/<int:pk>/book/", BookSessionView.as_view(), name="book-session"),
+    path(
+        "studios/<int:pk>/book/",
+        BookSessionView.as_view(),
+        name="book-session"
+    ),
     path(
         "photographers/",
         PhotographerListView.as_view(),
@@ -44,4 +48,4 @@ urlpatterns = [
         PhotographerDetailView.as_view(),
         name="photographer-detail",
     ),
-]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

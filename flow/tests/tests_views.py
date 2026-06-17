@@ -160,19 +160,6 @@ class BookingTests(TestCase):
             },
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 403)
 
-        self.assertTemplateUsed(
-            response,
-            "photoflow/error.html",
-        )
-
-        self.assertContains(
-            response,
-            "You cant create a booking for photo-session as a photographer",
-        )
-
-        self.assertEqual(
-            Booking.objects.count(),
-            0,
-        )
+        self.assertEqual(Booking.objects.count(), 0)

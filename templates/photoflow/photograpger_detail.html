@@ -78,15 +78,6 @@
 
                         <div class="d-flex flex-column flex-sm-row gap-2 mt-4">
 
-                            {% if photographer.is_available %}
-                                <a
-                                    href="{% url 'flow:booking-create' %}?photographer={{ photographer.pk }}"
-                                    class="btn btn-dark btn-lg flex-grow-1"
-                                >
-                                    Book photographer
-                                </a>
-                            {% endif %}
-
                             <a
                                 href="{% url 'flow:photographer-list' %}"
                                 class="btn btn-outline-dark btn-lg flex-grow-1"

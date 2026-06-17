@@ -11,9 +11,9 @@ from flow.forms import SignUpForm, BookingForm
 from flow.models import StudioRoom, User, Booking, Service
 
 
-
 class IndexView(generic.TemplateView):
     template_name = "photoflow/index.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["studios"] = StudioRoom.objects.order_by("-id")[:3]
@@ -126,49 +126,31 @@ class BookSessionView(
     template_name = "photoflow/booking_session.html"
     success_url = reverse_lazy("flow:booking-list")
 
-    def dispatch(self, request, *args, **kwargs):
-        self.studio = get_object_or_404(
-            StudioRoom,
-            pk=kwargs["pk"],
-        )
+    def get_studio(self):
+        if not hasattr(self, "studio"):
+            self.studio = get_object_or_404(
+                StudioRoom,
+                pk=self.kwargs["pk"],
+            )
 
-        return super().dispatch(request, *args, **kwargs)
+        return self.studio
 
     def test_func(self):
         return self.request.user.role == User.Role.CLIENT
 
-    def handle_no_permission(self):
-        if not self.request.user.is_authenticated:
-            return super().handle_no_permission()
-
-        return render(
-            self.request,
-            "photoflow/error.html",
-            {
-                "error_title": "No Permission",
-                "error_message": (
-                    "You cannot create a booking for a photo session "
-                    "as a photographer."
-                ),
-            },
-            status=403,
-        )
-
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs["studio"] = self.studio
-
+        kwargs["studio"] = self.get_studio()
         return kwargs
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["studio"] = self.studio
-
+        context["studio"] = self.get_studio()
         return context
 
     def form_valid(self, form):
         form.instance.client = self.request.user
-        form.instance.studio_room = self.studio
+        form.instance.studio_room = self.get_studio()
         form.instance.status = "Pending"
         form.instance.duration = form.cleaned_data["service"].duration
 
