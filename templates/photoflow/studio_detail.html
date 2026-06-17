@@ -5,18 +5,8 @@
 {% endblock %}
 
 {% block extra_css %}
-    <style>
-        .studio-image {
-            width: 100%;
-            max-height: 650px;
-            object-fit: cover;
-            border-radius: 24px;
-        }
-
-        .studio-info {
-            border-radius: 24px;
-        }
-    </style>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/studio_detail_styles.css' %}">
 {% endblock %}
 
 {% block content %}

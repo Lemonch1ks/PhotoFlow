@@ -1,41 +1,8 @@
 {% extends "base.html" %}
 
-{% block extra_css %}
-  <style>
-    .services-section {
-      background-color: #f8f9fa;
-      min-height: 80vh;
-  }
-
-  .service-card {
-    overflow: hidden;
-    border-radius: 16px;
-    min-height: 230px;
-    transition:
-        transform 0.25s ease,
-        box-shadow 0.25s ease;
-}
-
-  .service-card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
-  }
-
-
-  .service-card .card-body {
-      padding: 1.5rem;
-  }
-
-  .service-card .card-title {
-      font-weight: 600;
-  }
-
-  .empty-state {
-      background-color: white;
-      border-radius: 16px;
-      border: 1px dashed #ced4da;
-  }
-  </style>
+{% block css %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/service_list_styles.css' %}">
 {% endblock %}
 
 {% block title %}Services{% endblock %}

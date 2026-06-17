@@ -1,0 +1,31 @@
+:root {
+    --photoflow-primary: #6f42c1;
+    --photoflow-secondary: #d63384;
+}
+
+body {
+    background-color: #f8f9fa;
+}
+
+.page-header {
+    color: white;
+    background: linear-gradient(
+        135deg,
+        var(--photoflow-primary),
+        var(--photoflow-secondary)
+    );
+}
+
+.booking-card {
+    border: 0;
+    border-radius: 18px;
+    box-shadow: 0 12px 35px rgba(24, 24, 35, 0.1);
+}
+
+.status-badge {
+    padding: 7px 12px;
+    border-radius: 50rem;
+    background-color: #f1eaff;
+    color: var(--photoflow-primary);
+    font-weight: 600;
+}

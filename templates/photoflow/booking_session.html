@@ -5,34 +5,8 @@
 {% endblock %}
 
 {% block extra_css %}
-    <style>
-        body {
-            background-color: #f8f9fa;
-        }
-
-        .booking-card {
-            border: 0;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .booking-info {
-            padding: 16px;
-            border: 1px solid #dee2e6;
-            border-radius: 12px;
-            background-color: #f8f9fa;
-        }
-
-        .form-control,
-        .form-select {
-            min-height: 48px;
-            border-radius: 10px;
-        }
-
-        textarea.form-control {
-            min-height: 120px;
-        }
-    </style>
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/booking_session_styles.css' %}">
 {% endblock %}
 
 {% block content %}

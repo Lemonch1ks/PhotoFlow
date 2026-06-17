@@ -1,7 +1,12 @@
 {% extends "base.html" %}
-{% load static %}
 
 {% block title %}Studios{% endblock %}
+
+{% block css %}
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/studio_list_styles.css' %}">
+{% endblock %}
+
 
 {% block content %}
 <div class="container py-5">
