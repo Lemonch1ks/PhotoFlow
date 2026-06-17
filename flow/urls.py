@@ -1,5 +1,6 @@
 from django.urls import path
-
+from django.conf.urls.static import static
+from django.conf import settings
 from flow.views import (
     index,
     sign_up,
@@ -43,4 +44,4 @@ urlpatterns = [
         photographer_detail,
         name="photographer-detail",
     ),
-]
+]+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

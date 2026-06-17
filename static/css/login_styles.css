@@ -1,0 +1,92 @@
+.login-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            rgba(10, 10, 15, 0.72),
+            rgba(10, 10, 15, 0.88)
+        ),
+        url(
+            "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1920&q=80"
+        )
+        center / cover no-repeat;
+}
+
+.login-wrapper {
+    min-height: 100vh;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 950px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 24px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.45);
+}
+
+.login-info {
+    min-height: 590px;
+    padding: 60px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(15, 15, 22, 0.84),
+            rgba(60, 25, 85, 0.75)
+        ),
+        url(
+            "https://images.unsplash.com/photo-1606986628253-10a4502e0d9f?auto=format&fit=crop&w=1200&q=80"
+        )
+        center / cover no-repeat;
+}
+
+.login-form-section {
+    padding: 60px;
+    background-color: white;
+}
+
+.brand-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    color: white;
+    background: linear-gradient(135deg, #6f42c1, #d63384);
+}
+
+.form-control {
+    min-height: 50px;
+    border-radius: 12px;
+}
+
+.form-control:focus {
+    border-color: #6f42c1;
+    box-shadow: 0 0 0 0.25rem rgba(111, 66, 193, 0.15);
+}
+
+.login-button {
+    min-height: 52px;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #6f42c1, #d63384);
+}
+
+.login-button:hover {
+    background: linear-gradient(135deg, #5d35a6, #b92d71);
+}
+
+@media (max-width: 767.98px) {
+    .login-info {
+        display: none !important;
+    }
+
+    .login-form-section {
+        padding: 40px 28px;
+    }
+
+    .login-card {
+        max-width: 500px;
+        border-radius: 18px;
+    }
+}
