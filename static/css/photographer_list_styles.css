@@ -1,0 +1,46 @@
+.photographers-section {
+    min-height: 80vh;
+    background-color: #f8f9fa;
+}
+
+.photographer-card {
+    overflow: hidden;
+    border: 0;
+    border-radius: 16px;
+    transition: transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.photographer-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12) !important;
+}
+
+.photographer-image {
+    width: 100%;
+    height: 280px;
+    object-fit: cover;
+}
+
+.photographer-placeholder {
+    width: 100%;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-size: 4rem;
+    font-weight: 600;
+}
+
+.photographer-card .card-body {
+    padding: 1.5rem;
+}
+
+.empty-state {
+    padding: 4rem 2rem;
+    background-color: white;
+    border: 1px dashed #ced4da;
+    border-radius: 16px;
+}
