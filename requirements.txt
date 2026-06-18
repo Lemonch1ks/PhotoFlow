@@ -2,6 +2,7 @@ asgiref==3.11.1
 asttokens==3.0.1
 certifi==2026.4.22
 charset-normalizer==3.4.7
+click==8.4.1
 colorama==0.4.6
 comm==0.2.3
 crispy-bootstrap4==2026.2
@@ -16,6 +17,8 @@ flake8==7.3.0
 flake8-annotations==3.2.0
 flake8-quotes==3.4.0
 flake8-variables-names==0.0.6
+gunicorn==26.0.0
+h11==0.16.0
 idna==3.13
 iniconfig==2.3.0
 ipykernel==7.2.0
@@ -35,6 +38,7 @@ platformdirs==4.9.6
 pluggy==1.6.0
 prompt_toolkit==3.0.52
 psutil==7.2.2
+psycopg2-binary==2.9.12
 pure_eval==0.2.3
 pycodestyle==2.14.0
 pyflakes==3.4.0
@@ -43,6 +47,7 @@ pytest==9.0.3
 pytest-django==4.12.0
 pytest-xdist==3.8.0
 python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
 pyzmq==27.1.0
 requests==2.33.1
 setuptools==82.0.1
@@ -54,3 +59,4 @@ traitlets==5.14.3
 tzdata==2026.2
 urllib3==2.6.3
 wcwidth==0.6.0
+whitenoise==6.12.0

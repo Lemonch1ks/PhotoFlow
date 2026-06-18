@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinValueValidator
 from django.db import models
 
-from photoflow import settings
+from django.conf import settings
 
 
 class User(AbstractUser):
