@@ -1,8 +1,12 @@
 # PhotoFlow
 
 PhotoFlow is a Django-based photography studio booking system. It allows clients to browse studios, services, and photographers, then create and manage photo-session bookings.
+
+This is a learning project built as part of a Python backend course. It is not a production service.
+
 ## Try out the demo
-https://photoflow-8wed.onrender.com
+
+[photoflow-8wed.onrender.com](https://photoflow-8wed.onrender.com)
 
 
 ## Features
